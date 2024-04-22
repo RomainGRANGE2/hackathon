@@ -77,13 +77,10 @@ await fetch('https://localhost:7110/api/login?useCookies=false&useSessionCookies
     email: email.value,
     password: password.value
   })
-})
-.then((response) => {
-  response.json()
-})
-.then(data => {
-  if(data.accessToken) {
-    localStorage.setItem('accessToken', data.accessToken);
+}).then(async data => {
+  const result = await data.json()
+  if(result.accessToken) {
+    localStorage.setItem('accessToken', result.accessToken);
   }
 })
 .catch(error => console.error('Error:', error));
