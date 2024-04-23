@@ -1,6 +1,7 @@
 <template>
   <div>
     <nuxt-link
+      @click="setEventInStore()"
       to="/event"
       class="atelier cursor-pointer !bg-cover h-[390px] rounded-lg flex flex-col gap-y-2 items-center justify-center relative"
     >
@@ -17,6 +18,9 @@
 <script setup>
 import { format, parse } from "date-fns";
 import { fr } from "date-fns/locale/fr";
+import {useEventStore} from "~/stores/event.js";
+
+const eventStore = useEventStore()
 
 const props = defineProps({
   data: { type: Array, required: true },
@@ -36,6 +40,10 @@ const formatAndParse = function (date) {
     locale: fr,
   });
 };
+
+const setEventInStore = function (){
+  eventStore.currentEvent = props.data
+}
 </script>
 <style>
 .atelier {

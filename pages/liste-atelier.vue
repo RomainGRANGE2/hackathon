@@ -30,6 +30,19 @@ const pages = [
   { name: 'Liste des ateliers', href: '/liste-atelier' },
 ]
 
+const atelierss = ref(null)
+
+fetch("https://localhost:7110/api/Atelier", {
+  method: "get",
+  headers: {
+    "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
+  }
+}).then(async(result) => {
+  const atelierResult = await result.json()
+  atelierss.value = atelierResult
+  console.log(atelierss.value)
+})
+
 const ateliers = ref([
   {
     img:"/_nuxt/assets/images/degust2.png",
