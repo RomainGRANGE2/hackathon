@@ -56,7 +56,7 @@ const experience = ref([
 fetch("https://localhost:7110/api/Atelier", {
   method: "get",
   headers: {
-    "Authorization" : `Bearer ${localStorage.getItem("accesToken")}`
+    "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
   }
 }).then(async(result) => {
   ateliers.value = await result.json()
