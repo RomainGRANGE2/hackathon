@@ -1,8 +1,8 @@
 <template>
   <div>
     <nuxt-link to="/event" class="atelier cursor-pointer !bg-cover h-[390px] rounded-lg flex flex-col gap-y-2 items-center justify-center relative">
-      <p class="font-rubik text-3xl text-[#FFAF9D] font-extrabold">{{props.data.atelierName}}</p>
-      <p class="text-white font-redressed text-lg">X dégustations</p>
+      <p class="font-rubik text-3xl text-[#FFAF9D] font-extrabold">{{props.data.evenementName}}</p>
+      <p class="text-white font-redressed text-lg">{{props.data.nombreDegustation}} dégustations</p>
       <p class="absolute bottom-4 text-white font-redressed">{{date}}</p>
     </nuxt-link>
   </div>
@@ -17,7 +17,7 @@ const props = defineProps({
 })
 
 const date = computed(() => {
-  return "DATE" //"Du " + formatAndParse(props.data.date_start) + " au " + formatAndParse(props.data.date_End)
+  return "Du " + formatAndParse(props.data.dateDebut) + " au " + formatAndParse(props.data.dateFin)
 })
 
 const formatAndParse = function (date){

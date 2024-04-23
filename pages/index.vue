@@ -10,7 +10,7 @@
       <div class="flex flex-col px-6 lg:px-40">
         <p class="font-redressed text-center text-3xl py-10">Listes des Évènements à venir</p>
         <div class="lg:grid grid-cols-12 lg:gap-8 gap-4 flex overflow-scroll scrollbar-hide">
-          <card-atelier class="lg:col-span-3 lg:w-full w-[350px]" v-for="(item,i) in ateliers" :data="item" />
+          <card-atelier class="lg:col-span-3 lg:w-full w-[350px]" v-for="(item,i) in event" :data="item" />
         </div>
       </div>
       <div class="flex flex-col lg:flex-row justify-between items-center bg-primary bg-opacity-10 rounded-lg gap-x-4 py-20 px-6 lg:px-20 lg:mx-40">
@@ -36,7 +36,7 @@
 </template>
 <script setup>
 
-const ateliers = ref([])
+const event = ref([])
 
 const experience = ref([
   {
@@ -53,14 +53,14 @@ const experience = ref([
   }
 ])
 
-fetch("https://localhost:7110/api/Atelier", {
+fetch("https://localhost:7110/api/Evenement", {
   method: "get",
   headers: {
     "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
   }
 }).then(async(result) => {
-  ateliers.value = await result.json()
-  console.log(ateliers.value)
+  event.value = await result.json()
+  console.log(event.value)
 })
 
 </script>
