@@ -17,7 +17,7 @@ const props = defineProps({
 })
 
 const date = computed(() => {
-  return "Du " + formatAndParse(props.data.date_start) + " au " + formatAndParse(props.data.date_End)
+  return "DATE" //"Du " + formatAndParse(props.data.date_start) + " au " + formatAndParse(props.data.date_End)
 })
 
 const formatAndParse = function (date){
