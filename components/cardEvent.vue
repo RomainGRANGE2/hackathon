@@ -4,9 +4,6 @@
       to="/event"
       class="atelier cursor-pointer !bg-cover h-[390px] rounded-lg flex flex-col gap-y-2 items-center justify-center relative"
     >
-      <p class="font-rubik text-3xl font-extrabold special-text">
-        {{ props.data.thematique }}
-      </p>
       <p class="font-rubik text-3xl text-[#FFAF9D] font-extrabold">
         {{ props.data.evenementName }}
       </p>
