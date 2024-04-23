@@ -20,8 +20,10 @@
         </div>
       </div>
       <div class="w-full bg-primary">
-        <div class="p-6 lg:px-8">
-          <p>d</p>
+        <div class="p-6 lg:px-8 flex">
+          <div>
+            <img src="/_nuxt/assets/images/prof.png" alt="prof">
+          </div>
         </div>
       </div>
     </div>
@@ -33,15 +35,15 @@ const ateliers = ref([])
 
 const experience = ref([
   {
-    img:"/_nuxt/assets/images/vigne.png",
+    img:"/_nuxt/assets/images/vigne.svg",
     desc: "Explorez les délices du vin lors de notre atelier de dégustation. Plongez dans l'univers captivant du vin, découvrez les cépages, les régions viticoles et les techniques de vinification.",
   },
   {
-    img:"/_nuxt/assets/images/nose.png",
+    img:"/_nuxt/assets/images/nose.svg",
     desc: "Rejoignez-nous pour une aventure sensorielle où plaisir et découverte se conjuguent à la perfection, pour des souvenirs gustatifs qui raviront votre palais et éveilleront vos papilles.",
   },
   {
-    img:"/_nuxt/assets/images/glasses.png",
+    img:"/_nuxt/assets/images/glasses.svg",
     desc: "Participez à une aventure exquise dans une ambiance conviviale et élégante, où chaque gorgée de vin devient une invitation à l'émerveillement et à la découverte.",
   }
 ])
