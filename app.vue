@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="font-roboto">
     <Header v-if="route.path != '/admin'" />
     <NuxtPage />
     <Footer v-if="route.path != '/admin'" />

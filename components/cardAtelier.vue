@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nuxt-link to="/Event" class="atelier cursor-pointer !bg-cover h-[390px] rounded-lg flex flex-col gap-y-2 items-center justify-center relative">
+    <nuxt-link to="/event" class="atelier cursor-pointer !bg-cover h-[390px] rounded-lg flex flex-col gap-y-2 items-center justify-center relative">
       <p class="font-rubik text-3xl text-[#FFAF9D] font-extrabold">{{props.data.atelierName}}</p>
       <p class="text-white font-redressed text-lg">X dégustations</p>
       <p class="absolute bottom-4 text-white font-redressed">{{date}}</p>
