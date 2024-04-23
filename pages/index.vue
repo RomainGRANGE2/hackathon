@@ -10,21 +10,21 @@
       <div class="flex flex-col px-6 lg:px-40">
         <p class="font-redressed text-center text-3xl py-10">Listes des Évènements à venir</p>
         <div class="lg:grid grid-cols-12 lg:gap-8 gap-4 flex overflow-scroll scrollbar-hide">
-          <card-event class="lg:col-span-3 lg:w-full w-[350px]" v-for="(item,i) in event" :data="item" />
+          <card-event class="lg:col-span-3" v-for="(item,i) in event" :data="item" />
         </div>
       </div>
-      <div class="flex flex-col lg:flex-row justify-between items-center bg-primary bg-opacity-10 rounded-lg gap-x-4 py-20 px-6 lg:px-20 lg:mx-40">
+      <div class="flex flex-col lg:flex-row justify-between items-center bg-primary bg-opacity-10 rounded-lg gap-4 py-20 px-6 lg:px-20 lg:mx-40">
         <div v-for="item in experience" class="flex lg:flex-col flex-row justify-center gap-4 items-center">
-          <img class="w-[162px] lg:w-auto"  :src="item.img" alt="image">
+          <img class="lg:!w-[162px] lg:h-[146px] !w-[100px] h-[90px]"  :src="item.img" alt="image">
           <p class="lg:text-center">{{item.desc}}</p>
         </div>
       </div>
       <div class="w-full bg-primary px-6 lg:px-40">
-        <div class="flex gap-x-10 py-6">
-          <div class="w-1/2">
+        <div class="flex lg:flex-row flex-col gap-y-4 lg:gap-y-0 gap-x-10 py-6">
+          <div class="lg:w-1/2">
             <img src="/_nuxt/assets/images/prof.jpg" alt="prof">
           </div>
-          <div class="w-1/2 flex flex-col justify-center gap-y-4 text-white">
+          <div class="lg:w-1/2 flex flex-col justify-center gap-y-4 text-white">
             <p class="text-left font-redressed text-4xl">Qui suis-je ?</p>
             <p>Découvrez Olivier, un passionné de vin et d'œnologie dont l'amour pour le divin nectar transcende les frontières du simple plaisir gustatif pour devenir un art de vivre.
               Depuis son plus jeune âge, Olivier a été captivé par l'univers fascinant du vin. Ce n'est pas seulement une boisson pour lui, mais une véritable passion qui l'a conduit à explorer les vignobles du monde entier, à déguster des cépages variés et à perfectionner son palais pour distinguer les subtilités des arômes et des saveurs.</p>

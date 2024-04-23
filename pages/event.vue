@@ -1,6 +1,6 @@
 <template>
   <div class="bg-primary flex flex-col gap-y-6 bg-opacity-10">
-    <breadcrumb :pages="pages" class="px-6 lg:px-40" />
+    <breadcrumb :pages="pages" class="px-6 lg:px-40 pt-3" />
     <div class="flex justify-between items-center px-6 lg:px-40">
       <div class="flex flex-col gap-y-4">
         <p class="font-redressed text-5xl">{{eventStore.currentEvent.evenementName}}</p>
@@ -13,11 +13,11 @@
         <svg-icon class="text-gray-500" :path="mdiExportVariant" type="mdi" />
       </div>
     </div>
-    <div class="flex gap-x-4 overflow-scroll scrollbar-hide h-80 px-2">
-      <img v-for="item in images" :src="item.url" class="rounded-2xl" alt="image">
+    <div class="flex gap-x-4 overflow-scroll scrollbar-hide h-80 px-6 lg:px-2">
+      <img v-for="item in images" :src="item.url" class="rounded-2xl object-cover" alt="image">
     </div>
-    <div class="grid grid-cols-12 px-6 lg:px-40 my-40">
-      <div class="col-span-9 flex flex-col gap-y-6 w-1/2">
+    <div class="lg:grid flex flex-col gap-y-4 lg:gap-y-0 grid-cols-12 px-6 lg:px-40 lg:my-40">
+      <div class="col-span-9 flex flex-col gap-y-6 lg:pr-20">
         <p class="font-redressed text-xl">Description</p>
         <p>Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit</p>
       </div>
@@ -35,15 +35,15 @@
         <div class="flex flex-col gap-y-4">
           <div v-for="item in event" class="grid gap-x-4 grid-cols-12 bg-white rounded-xl">
             <div class="col-span-5">
-              <img src="/_nuxt/assets/images/degust1.png" alt="image" class="h-60 w-full object-cover rounded-l-xl">
+              <img src="/_nuxt/assets/images/degust1.png" alt="image" class="lg:h-60 h-48 w-full object-cover rounded-l-xl">
             </div>
             <div class="col-span-7 flex flex-col py-6 pr-6 relative">
               <p>{{item.evenementName}}</p>
               <p>{{item.localisation}}</p>
               <p>Du {{parseAndFormat(item.dateDebut, "dd MMMM")}} au {{parseAndFormat(item.dateFin, "dd MMMM")}}</p>
               <div class="absolute bottom-6 flex justify-between items-center w-full pr-6">
-                <p>{{item.prix}} € / perosnne</p>
-                <div @click="setEventInStore(item)" class="bg-primary rounded-2xl text-center py-2 px-8 cursor-pointer text-white">
+                <p>{{item.prix}} € / personne</p>
+                <div @click="setEventInStore(item)" class="bg-primary rounded-2xl text-center py-2 lg:px-8 px-4 cursor-pointer text-white">
                   Voir
                 </div>
               </div>
@@ -52,7 +52,7 @@
         </div>
       </div>
     </div>
-    <div aria-live="assertive" class="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6">
+    <div aria-live="assertive" class="z-50 pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6">
       <div class="flex w-full flex-col items-center space-y-4 sm:items-end">
         <transition enter-active-class="transform ease-out duration-300 transition" enter-from-class="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2" enter-to-class="translate-y-0 opacity-100 sm:translate-x-0" leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
           <div v-if="show" class="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">

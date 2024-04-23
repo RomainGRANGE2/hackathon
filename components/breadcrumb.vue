@@ -1,6 +1,6 @@
 <template>
-  <nav class="flex pt-3" aria-label="Breadcrumb">
-    <ol role="list" class="flex space-x-4 rounded-md bgwhite px-2">
+  <nav class="flex" aria-label="Breadcrumb">
+    <ol role="list" class="flex space-x-4 rounded-md bgwhite">
       <li class="flex">
         <div class="flex items-center">
           <nuxt-link to="/">
