@@ -9,7 +9,7 @@
     <div class="flex flex-col gap-y-20">
       <div class="flex flex-col px-6 lg:px-40">
         <p class="font-redressed text-center text-3xl py-10">Listes des Évènements à venir</p>
-        <div class="lg:grid grid-cols-12 lg:gap-8 gap-4 flex overflow-scroll">
+        <div class="lg:grid grid-cols-12 lg:gap-8 gap-4 flex overflow-scroll scrollbar-hide">
           <card-atelier class="lg:col-span-3 lg:w-full w-[350px]" v-for="(item,i) in ateliers" :data="item" />
         </div>
       </div>
