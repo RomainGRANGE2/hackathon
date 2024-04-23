@@ -16,7 +16,7 @@
         <a v-for="item in navigation" :key="item.name" :href="item.to" class="text-sm font-semibold leading-6 text-gray-900">{{ item.name }}</a>
       </div>
       <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-        <nuxt-link to="/" class="text-sm font-semibold leading-6 text-gray-900">
+        <nuxt-link to="/admin" class="text-sm font-semibold leading-6 text-gray-900">
           <svg-icon :path="mdiAccountCircle" type="mdi" />
         </nuxt-link>
       </div>
@@ -39,7 +39,7 @@
               <a v-for="item in navigation" :key="item.name" :href="item.to" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ item.name }}</a>
             </div>
             <div class="py-6">
-              <nuxt-link to="/" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+              <nuxt-link to="/admin" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
                 <svg-icon :path="mdiAccountCircle" type="mdi" />
               </nuxt-link>
             </div>
@@ -57,7 +57,7 @@ import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiMenu, mdiClose, mdiAccountCircle } from '@mdi/js';
 
 const navigation = [
-  { name: 'Atelier', to: 'atelier' },
+  { name: 'Atelier', to: 'liste-atelier' },
   { name: 'Calendrier', to: 'calendrier' },
   { name: 'Stock', to: 'stock' },
   { name: 'Réservation', to: 'reservation' },

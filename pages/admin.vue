@@ -64,8 +64,11 @@
   </div>
 </template>
 <script setup>
+import { useRouter } from 'vue-router';
+
 const email = ref(null)
 const password = ref(null)
+const router = useRouter();
 const submit = async function() {
 await fetch('https://localhost:7110/api/login?useCookies=false&useSessionCookies=false', {
   method: 'POST',
@@ -81,6 +84,7 @@ await fetch('https://localhost:7110/api/login?useCookies=false&useSessionCookies
   const result = await data.json()
   if(result.accessToken) {
     localStorage.setItem('accessToken', result.accessToken);
+    router.push('/');
   }
 })
 .catch(error => console.error('Error:', error));
