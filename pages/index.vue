@@ -22,7 +22,7 @@
       <div class="w-full bg-primary px-6 lg:px-40">
         <div class="flex gap-x-10 py-6">
           <div class="w-1/2">
-            <img src="/_nuxt/assets/images/prof.png" alt="prof">
+            <img src="/_nuxt/assets/images/prof.jpg" alt="prof">
           </div>
           <div class="w-1/2 flex flex-col justify-center gap-y-4 text-white">
             <p class="text-left font-redressed text-4xl">Qui suis-je ?</p>

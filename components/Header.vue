@@ -57,10 +57,10 @@ import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiMenu, mdiClose, mdiAccountCircle } from '@mdi/js';
 
 const navigation = [
-  { name: 'Product', to: '#' },
-  { name: 'Features', to: '#' },
-  { name: 'Marketplace', to: '#' },
-  { name: 'Company', to: '#' },
+  { name: 'Atelier', to: 'atelier' },
+  { name: 'Calendrier', to: 'calendrier' },
+  { name: 'Stock', to: 'stock' },
+  { name: 'Réservation', to: 'reservation' },
 ]
 
 const mobileMenuOpen = ref(false)
