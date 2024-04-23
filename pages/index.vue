@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="font-roboto">
     <div class="w-full h-80 bg-[url('/_nuxt/assets/images/bannerHome.png')] bg-cover flex flex-col gap-y-4 items-center justify-center text-white">
       <p class="font-redressed text-5xl">Dégustation de vin</p>
       <div class="bg-primary py-1 px-3 cursor-pointer  rounded-md font-roboto">
@@ -7,22 +7,27 @@
       </div>
     </div>
     <div class="flex flex-col gap-y-20">
-      <div class="flex flex-col p-6 lg:px-8">
+      <div class="flex flex-col px-6 lg:px-40">
         <p class="font-redressed text-center text-3xl py-10">Listes des Évènements à venir</p>
-        <div class="grid grid-cols-12 gap-8">
-          <card-atelier class="col-span-3 w-full" v-for="(item,i) in ateliers" :data="item" />
+        <div class="lg:grid grid-cols-12 lg:gap-8 gap-4 flex overflow-scroll">
+          <card-atelier class="lg:col-span-3 lg:w-full w-[350px]" v-for="(item,i) in ateliers" :data="item" />
         </div>
       </div>
-      <div class="flex justify-between items-center bg-primary bg-opacity-10 rounded-lg gap-x-4 py-20 px-6 lg:px-8">
-        <div v-for="item in experience" class="flex flex-col justify-center gap-y-4 items-center">
-          <img :src="item.img" alt="image">
-          <p class="text-center">{{item.desc}}</p>
+      <div class="flex flex-col lg:flex-row justify-between items-center bg-primary bg-opacity-10 rounded-lg gap-x-4 py-20 px-6 lg:px-20 lg:mx-40">
+        <div v-for="item in experience" class="flex lg:flex-col flex-row justify-center gap-4 items-center">
+          <img class="w-[162px] lg:w-auto"  :src="item.img" alt="image">
+          <p class="lg:text-center">{{item.desc}}</p>
         </div>
       </div>
-      <div class="w-full bg-primary">
-        <div class="p-6 lg:px-8 flex">
-          <div>
+      <div class="w-full bg-primary px-6 lg:px-40">
+        <div class="flex gap-x-10 py-6">
+          <div class="w-1/2">
             <img src="/_nuxt/assets/images/prof.png" alt="prof">
+          </div>
+          <div class="w-1/2 flex flex-col justify-center gap-y-4 text-white">
+            <p class="text-left font-redressed text-4xl">Qui suis-je ?</p>
+            <p>Découvrez Olivier, un passionné de vin et d'œnologie dont l'amour pour le divin nectar transcende les frontières du simple plaisir gustatif pour devenir un art de vivre.
+              Depuis son plus jeune âge, Olivier a été captivé par l'univers fascinant du vin. Ce n'est pas seulement une boisson pour lui, mais une véritable passion qui l'a conduit à explorer les vignobles du monde entier, à déguster des cépages variés et à perfectionner son palais pour distinguer les subtilités des arômes et des saveurs.</p>
           </div>
         </div>
       </div>

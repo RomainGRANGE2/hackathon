@@ -2,7 +2,6 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
 export default {
   content: [
-    "./components/**/*.vue",
     "./components/*.vue",
     "./pages/*.vue",
   ],

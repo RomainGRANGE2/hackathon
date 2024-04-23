@@ -2,6 +2,7 @@
   <div>
     <Header v-if="route.path != '/admin'" />
     <NuxtPage />
+    <Footer v-if="route.path != '/admin'" />
   </div>
 </template>
 <script setup lang="ts">
