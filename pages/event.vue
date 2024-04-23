@@ -182,7 +182,7 @@ const signInEvent = function (){
   const htmlContent = "<div style=\"max-width: 600px; margin: 20px auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\">\n" +
       "  <h1 style=\"text-align: center;\">Confirmation d'inscription à " + eventStore.currentEvent.evenementName + "</h1>\n" +
       "  \n" +
-      "  <p>Merci pour votre inscription à notre événement de dégustation de vin. Voici un récapitulatif de vos informations :</p>\n" +
+      "  <p style=\"text-align: center;\">Merci pour votre inscription à notre événement de dégustation de vin. Voici un récapitulatif de vos informations :</p>\n" +
       "  \n" +
       "  <ul>\n" +
       "    <li><strong>Adresse e-mail :</strong> " + email.value + "</li>\n" +

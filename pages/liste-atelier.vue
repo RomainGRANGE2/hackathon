@@ -13,11 +13,11 @@
           <img src="/_nuxt/assets/images/degust2.png" alt="image" class="lg:rounded-l-xl object-cover h-full w-full">
         </div>
         <div class="col-span-7 flex flex-col gap-y-4 lg:pr-6 lg:py-6 p-4">
-          <p class="text-xl">Atelier</p>
+          <p class="text-xl">{{item.atelierName}}</p>
           <p class="font-redressed text-xl">Description</p>
           <p>{{item.desc}}</p>
           <div class="flex justify-end">
-            <nuxt-link to="/atelier" class="bg-primary px-8 py-2 rounded-xl text-white cursor-pointer">
+            <nuxt-link @click="setAtelierInStore(item)"  to="/atelier" class="bg-primary px-8 py-2 rounded-xl text-white cursor-pointer">
               Voir
             </nuxt-link>
           </div>
@@ -27,6 +27,10 @@
   </div>
 </template>
 <script setup>
+import {useAtelierStore} from "~/stores/atelier.js";
+
+const atelierStore = useAtelierStore()
+
 const pages = [
   { name: 'Liste des ateliers', href: '/liste-atelier' },
 ]
@@ -43,5 +47,9 @@ fetch("https://localhost:7110/api/Atelier", {
   ateliers.value = atelierResult
   console.log(ateliers.value)
 })
+
+const setAtelierInStore = function (atelier){
+  atelierStore.currentAtelier = atelier
+}
 
 </script>
