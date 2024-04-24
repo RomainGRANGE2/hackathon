@@ -252,7 +252,7 @@ const formEvent = ref({
   localisation: null,
   nombreParticipant: null,
   nombreDegustation: null,
-  imageEvenement: [],
+  imageFiles: [],
   prix: null,
   ecoleId: null,
   atelierId: null
@@ -301,7 +301,7 @@ const setSelectAtelier = function (atelier){
     atelierName: atelier.atelierName,
     date: atelier.date,
     ressource: atelier.ressource,
-    image: atelier.images,
+    imageFiles: atelier.images,
     thematique: atelier.thematique,
     description: atelier.description
   }
@@ -312,24 +312,37 @@ const addAtelier = function (){
   newAtelier.value = true
   formAtelier.value = {
     atelierName: null,
-    description: null,
+    Description: null,
     thematique: null,
     date: null,
-    ressource: null
+    ressource: null,
+    imageFiles: []
   }
 }
 
 const validFormAtelier = function (){
 
   const url = newAtelier.value ? "https://localhost:7110/api/Atelier" : `https://localhost:7110/api/Atelier/${atelierSelected.value.atelierId}`
+  const formData = new FormData();
+  formData.append("AtelierName",formAtelier.value.atelierName)
+  formData.append("Description",formAtelier.value.description)
+  formData.append("Thematique",formAtelier.value.thematique)
+  formData.append("Date",formAtelier.value.date)
+  formData.append("Ressource",formAtelier.value.ressource)
+  formData.append("ImageFiles",formAtelier.value.imageFiles)
+
+  const headers = newAtelier.value ? {
+    "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
+  } :
+  {
+    "Content-type" : "application/json",
+    "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
+  }
 
   fetch(url, {
     method: newAtelier.value ? "post" : "put",
-    headers: {
-      'Content-Type': 'application/json',
-      "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
-    },
-    body: JSON.stringify(formAtelier.value)
+    headers: headers,
+    body: newAtelier.value ? formData : JSON.stringify(formAtelier.value)
   }).then(async(result) => {
     getAllAtelelier()
   })
