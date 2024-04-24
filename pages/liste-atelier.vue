@@ -15,7 +15,7 @@
         <div class="col-span-7 flex flex-col gap-y-4 lg:pr-6 lg:py-6 p-4">
           <p class="text-xl">{{item.atelierName}}</p>
           <p class="font-redressed text-xl">Description</p>
-          <p>{{item.desc}}</p>
+          <p>{{item.description}}</p>
           <div class="flex justify-end">
             <nuxt-link @click="setAtelierInStore(item)"  to="/atelier" class="bg-primary px-8 py-2 rounded-xl text-white cursor-pointer">
               Voir
