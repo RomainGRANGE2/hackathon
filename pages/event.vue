@@ -16,20 +16,67 @@
     <div class="flex gap-x-4 overflow-scroll scrollbar-hide h-80 px-6 lg:px-2">
       <img v-for="item in images" :src="item.url" class="rounded-2xl object-cover" alt="image">
     </div>
-    <div class="lg:grid flex flex-col gap-y-4 lg:gap-y-0 grid-cols-12 px-6 lg:px-40 lg:my-40">
+    <div class="lg:grid flex flex-col gap-y-4 lg:gap-y-0 grid-cols-12 px-6 lg:px-40 lg:my-10">
       <div class="col-span-9 flex flex-col gap-y-6 lg:pr-20">
         <p class="font-redressed text-xl">Description</p>
         <p>Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit</p>
       </div>
-      <div class="col-span-3 flex flex-col p-6 gap-y-2 rounded-xl bg-white shadow-2xl">
-        <p class="font-bold">{{eventStore.currentEvent.prix}} € / persone</p>
+      <div class="col-span-3 flex flex-col p-6 gap-y-2 rounded-xl bg-white shadow-xl">
+        <p class="font-bold">{{eventStore.currentEvent.prix}} € / personne</p>
         <input v-model="email" type="email" class="rounded-2xl border-gray-400 border pl-4 py-2" placeholder="Adresse e-mail">
         <div @click="signInEvent()" class="bg-primary w-full rounded-2xl text-center py-2 cursor-pointer text-white">
           S'inscrire
         </div>
       </div>
     </div>
-    <div class="bg-primary">
+    <div v-if="isConnected" class="bg-white m-5 rounded-2xl px-4 py-6 sm:px-6 lg:px-8">
+      <div class="sm:flex sm:items-center">
+        <div class="sm:flex-auto">
+          <h1 class="text-base font-semibold leading-6 text-gray-900">Participants</h1>
+        </div>
+      </div>
+      <div class="mt-5 flow-root">
+        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+            <table class="min-w-full divide-y divide-gray-300">
+              <thead>
+              <tr>
+                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Email</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Nom de l'école</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+                <th scope="col" class="relative pr-4 py-3.5 text-right text-sm font-semibold text-gray-900 sm:pr-0">Actions</th>
+              </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200 bg-white">
+              <tr v-for="person in visitors" :key="person.email">
+                <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
+                  <div class="flex items-start">
+                    <div class="  ">
+                      <div class="font-medium text-gray-900">{{ person.email }}</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                  <div class="text-gray-900">{{ person.title }}</div>
+                  <div class="mt-1 text-gray-500">{{ person.department }}</div>
+                </td>
+                <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                  <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Active</span>
+                </td>
+                <td class="flex gap-x-2 justify-end relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                  <button class="text-white bg-green-500 py-2 px-4 rounded-3xl hover:text-green-500 hover:bg-white hover:border-green-500 border transition-all duration-300"
+                  >À payer</button>
+                  <button class="text-white bg-primary py-2 px-4 rounded-3xl hover:text-primary hover:bg-white hover:border-primary border transition-all duration-300"
+                  >Refuser</button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-else class="bg-primary">
       <div class="px-6 lg:px-40 pb-10 flex flex-col gap-y-4 pt-4">
         <p class="text-4xl font-redressed text-white text-center">Autre dates</p>
         <div class="flex flex-col gap-y-4">
@@ -102,6 +149,8 @@ const loadEvent = function (){
   event.value = allEvents.value.filter(x => x.atelierId == eventStore.currentEvent.atelierId && x.evenementId != eventStore.currentEvent.evenementId)
 }
 
+const isConnected = !!localStorage.getItem("accessToken")
+
 if(eventStore.currentEvent == null){
   router.push("/")
 } else {
@@ -157,6 +206,8 @@ const otherDates = ref([
     price: "55"
   }
 ])
+
+const visitors = ref([]);
 
 const pages = [
   { name: 'Evenement dégustation', href: '/event' },
@@ -214,4 +265,24 @@ const signInEvent = function (){
     email.value = ""
   })
 }
+fetch('https://localhost:7110/api/EvenementVisiteur', {
+  method: 'GET',
+  headers: {
+    "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+  }
+})
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      // Stockez les données récupérées dans la variable 'visitors'
+      visitors.value = data;
+    })
+    .catch(error => {
+      console.error('There was a problem with your fetch operation:', error);
+    });
+
 </script>
