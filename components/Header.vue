@@ -13,11 +13,11 @@
         </button>
       </div>
       <div class="hidden lg:flex lg:gap-x-12">
-        <a v-for="item in navigation" :key="item.name" :href="item.to" class="text-sm font-semibold leading-6 text-gray-900">{{ item.name }}</a>
+        <a v-for="item in navigation" :key="item.name" :href="item.to" :class="isConnected ? '' : item.admin ? 'hidden' : '' " class="text-sm font-semibold leading-6 text-gray-900">{{ item.name }}</a>
       </div>
       <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-        <nuxt-link to="/admin" class="text-sm font-semibold leading-6 text-gray-900">
-          <svg-icon :path="mdiAccountCircle" type="mdi" />
+        <nuxt-link to="/gestion-admin" class="text-sm font-semibold leading-6 text-gray-900">
+          <svg-icon class="cursor-pointer" v-if="isConnected" :path="mdiAccountCircle" type="mdi" />
         </nuxt-link>
       </div>
     </nav>
@@ -36,11 +36,11 @@
         <div class="mt-6 flow-root">
           <div class="-my-6 divide-y divide-gray-500/10">
             <div class="space-y-2 py-6">
-              <a v-for="item in navigation" :key="item.name" :href="item.to" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ item.name }}</a>
+              <a v-for="item in navigation" :key="item.name" :href="item.to" :class="isConnected ? '' : item.admin ? 'hidden' : '' " class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ item.name }}</a>
             </div>
             <div class="py-6">
-              <nuxt-link to="/admin" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                <svg-icon :path="mdiAccountCircle" type="mdi" />
+              <nuxt-link to="/gestion-admin" class="text-sm font-semibold">
+                <svg-icon class="cursor-pointer" v-if="isConnected" :path="mdiAccountCircle" type="mdi" />
               </nuxt-link>
             </div>
           </div>
@@ -57,11 +57,13 @@ import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiMenu, mdiClose, mdiAccountCircle } from '@mdi/js';
 
 const navigation = [
-  { name: 'Atelier', to: 'liste-atelier' },
-  { name: 'Calendrier', to: 'calendrier' },
-  { name: 'Stock', to: 'stock' },
-  { name: 'Réservation', to: 'reservation' },
+  { name: 'Atelier', to: 'liste-atelier', admin: false },
+  { name: 'Calendrier', to: 'calendrier', admin: true},
+  { name: 'Stock', to: 'stock', admin: true },
+  { name: 'Réservation', to: 'reservation',admin: true },
 ]
+
+const isConnected = !!localStorage.getItem("accessToken")
 
 const mobileMenuOpen = ref(false)
 </script>

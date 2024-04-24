@@ -10,6 +10,14 @@
 <script>
 import { Qalendar } from "qalendar";
 
+const router = useRouter()
+
+const isConnected = !!localStorage.getItem("accessToken")
+
+if(!isConnected){
+  router.push("/")
+}
+
 export default {
   components: {
     Qalendar,
