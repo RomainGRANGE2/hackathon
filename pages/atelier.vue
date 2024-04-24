@@ -48,6 +48,7 @@ if(atelierStore.currentAtelier == null){
 }
 
 const pages = [
+  { name: 'Liste ateliers', href: '/liste-atelier' },
   { name: 'Atelier', href: '/atelier' },
 ]
 </script>
