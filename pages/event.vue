@@ -214,7 +214,7 @@ const pages = [
 ]
 
 const parseAndFormat = function(date, formatWish){
-  return format(parse(date, "dd/MM/yyyy", new Date()), formatWish, {
+  return format(parse(date, "yyyy-MM-dd", new Date()), formatWish, {
     locale: fr,
   })
 }

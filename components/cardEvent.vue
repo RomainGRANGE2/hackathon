@@ -36,7 +36,7 @@ const date = computed(() => {
 });
 
 const formatAndParse = function (date) {
-  return format(parse(date, "dd/MM/yyyy", new Date()), "dd MMMM", {
+  return format(parse(date, "yyyy-MM-dd", new Date()), "dd MMMM", {
     locale: fr,
   });
 };

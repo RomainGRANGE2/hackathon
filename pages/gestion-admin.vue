@@ -74,7 +74,7 @@
             </DisclosureButton>
             <DisclosurePanel class="grid grid-cols-12 gap-4">
               <card-event-in-atelier @getEvent="getEventByAtelierId()" modif class="col-span-6" v-for="item in allAEventByAtelierId" :data="item"></card-event-in-atelier>
-              <div @click="openFormNewEvent()" class="col-span-6 bg-primary bg-opacity-10 h-[260px] rounded-xl flex items-center justify-center cursor-pointer">
+              <div @click="openFormNewEvent()" :class="allAEventByAtelierId.length == 0 ? 'h-[260px]' : ''" class="col-span-6 bg-primary bg-opacity-10 rounded-xl flex items-center justify-center cursor-pointer">
                 <svg-icon size="60" :path="mdiFolderPlusOutline" type="mdi" />
               </div>
             </DisclosurePanel>
