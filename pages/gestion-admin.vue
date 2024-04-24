@@ -79,6 +79,28 @@
               </div>
             </DisclosurePanel>
           </Disclosure>
+          <Disclosure v-if="newAtelier" v-slot="{ open }">
+            <DisclosureButton class="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
+              <p>Créer une école</p>
+              <svg-icon :path="open ? mdiChevronDown : mdiChevronUp" type="mdi" />
+            </DisclosureButton>
+            <DisclosurePanel>
+              <form @submit.prevent="validFormEcole()">
+                <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+                  <div>
+                    <label class="block text-sm font-semibold leading-6 text-gray-900">Nom</label>
+                    <div class="mt-2.5">
+                      <input v-model="formEcole.ecoleName" required type="text" autocomplete="given-name" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-10">
+                  <button type="submit" class="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Créer</button>
+                </div>
+              </form>
+            </DisclosurePanel>
+          </Disclosure>
+
         </div>
       </div>
     </div>
@@ -173,7 +195,7 @@
                         <label for="last-name" class="block text-sm font-semibold leading-6 text-gray-900">Ecole</label>
                         <div class="mt-2.5 flex items-center gap-x-1">
                           <select v-model="formEvent.ecoleId" class="w-full">
-                            <option v-for="item in allEcoles" :value="item.id">{{item.EcoleName}}</option>
+                            <option v-for="item in allEcoles" :value="item.ecoleId">{{item.ecoleName}}</option>
                           </select>
                           <svg-icon @click="formEvent.ecoleId = null" class="cursor-pointer text-black" :path="mdiClose" type="mdi" />
                         </div>
@@ -258,6 +280,10 @@ const formEvent = ref({
   atelierId: null
 })
 
+const formEcole = ref({
+  ecoleName: null
+})
+
 const isOpen = ref(false)
 
 const closeModal = function (){
@@ -287,6 +313,7 @@ const getEventByAtelierId = function (){
     }
   }).then(async(result) => {
     const eventResult = await result.json()
+    console.log(eventResult)
     allAEventByAtelierId.value = eventResult
   })
 }
@@ -395,13 +422,29 @@ const deleteAtelier = function (){
 
 const validFormEvent = function (){
   console.log(formEvent.value)
+
+  const formData = new FormData();
+  formData.append("EvenementName",formEvent.value.evenementName)
+  formData.append("Description",formEvent.value.description)
+  formData.append("DateDebut",formEvent.value.dateDebut)
+  formData.append("DateFin",formEvent.value.dateFin)
+  formData.append("DateLimit",formEvent.value.dateLimit)
+  formData.append("Localisation",formEvent.value.localisation)
+  formData.append("NombreParticipant",formEvent.value.nombreParticipant)
+  formData.append("NombreDegustation",formEvent.value.nombreDegustation)
+  formData.append("ImageFiles",formEvent.value.imageFiles)
+  formData.append("Prix",formEvent.value.prix)
+  if(formEvent.value.ecoleId != null){
+    formData.append("EcoleId",formEvent.value.ecoleId)
+  }
+  formData.append("AtelierId",formEvent.value.atelierId)
+
   fetch(`https://localhost:7110/api/Evenement`, {
     method: "post",
     headers: {
-      'Content-Type': 'application/json',
       "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
     },
-    body: JSON.stringify(formEvent.value)
+    body: formData
   }).then(async(result) => {
     isOpen.value = false
     getEventByAtelierId()
@@ -412,5 +455,18 @@ const validFormEvent = function (){
 const openFormNewEvent = function (){
   isOpen.value = true
   formEvent.value.atelierId = atelierSelected.value.atelierId
+}
+
+const validFormEcole = function (){
+  fetch(`https://localhost:7110/api/Ecole`, {
+    method: "post",
+    headers: {
+      'Content-Type': 'application/json',
+      "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
+    },
+    body: JSON.stringify(formEcole.value)
+  }).then(async(result) => {
+
+  })
 }
 </script>

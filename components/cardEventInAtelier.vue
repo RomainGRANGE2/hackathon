@@ -208,7 +208,7 @@ const openDialogFormEvent = function(){
     atelierId: props.data.atelierId
   }
 
-  console.log(formEvent.value)
+  console.log(props.data)
 }
 
 const allAteliers = ref([])
