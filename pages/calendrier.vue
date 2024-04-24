@@ -1,6 +1,7 @@
 <template>
-  <div class="h-screen mx-9 mb-8">
+  <div class="h-screen mx-9 mb-8 calendar-container is-light-mode">
     <Qalendar
+      v-if="events.length > 0"
       :events="events"
       :config="config"
     />
@@ -9,6 +10,7 @@
 
 <script>
 import { Qalendar } from "qalendar";
+import moment from 'moment';
 
 export default {
   components: {
@@ -17,39 +19,48 @@ export default {
 
   data() {
     return {
-      events: [
-        // ...
-        {
-          title: "Advanced algebra",
-          with: "Chandler Bing",
-          time: { start: "2022-05-16 12:05", end: "2022-05-16 13:35" },
-          color: "yellow",
-          isEditable: true,
-          id: "753944708f0f",
-          description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores assumenda corporis doloremque et expedita molestias necessitatibus quam quas temporibus veritatis. Deserunt excepturi illum nobis perferendis praesentium repudiandae saepe sapiente voluptatem!"
-        },
-        {
-          title: "Ralph on holiday",
-          with: "Rachel Greene",
-          time: { start: "2024-04-23 12:05", end: "2024-04-26 13:35" },
-          color: "green",
-          isEditable: true,
-          id: "5602b6f589fc"
-        }
-      ],
+      events: [],
       config: {
-        locale: "eu",
+        locale: "fr-FR",
         defaultMode: "month",
         dayBoundaries: {
           start: 6,
           end: 3,
         },
-      }
-    }
+      },
+    };
   },
-}
+
+  created() {
+    this.loadEvents();
+  },
+
+  methods: {
+    async loadEvents() {
+      fetch("https://localhost:7110/api/Evenement", {
+        method: "get",
+        headers: {
+          "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
+        }
+      }).then(async(result) => {
+        const eventResult = await result.json()
+        for (const event of eventResult) {
+          this.events.push(
+            {
+              title: event.evenementName,
+              time: { start: moment(event.dateDebut, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm'), end: moment(event.dateFin, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm') },
+              isEditable: true,
+              location: event.localisation,
+              id: event.evenementId,
+            }
+          );
+        }
+      });
+    },
+  },
+};
 </script>
 
 <style>
-@import "qalendar/dist/style.css";
+  @import "qalendar/dist/style.css";
 </style>
