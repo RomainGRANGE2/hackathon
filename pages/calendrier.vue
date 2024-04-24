@@ -10,7 +10,6 @@
 
 <script>
 import { Qalendar } from "qalendar";
-import moment from 'moment';
 
 const router = useRouter()
 
@@ -56,8 +55,8 @@ export default {
           this.events.push(
             {
               title: event.evenementName,
-              time: { start: moment(event.dateDebut, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm'), end: moment(event.dateFin, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm') },
-              isEditable: true,
+              time: { start: event.dateDebut, end: event.dateFin },
+              isEditable: false,
               location: event.localisation,
               id: event.evenementId,
             }

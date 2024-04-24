@@ -10,7 +10,7 @@
           </div>
           <div class="w-7/12 flex flex-col justify-center gap-y-4">
             <p class="font-redressed text-xl">Description</p>
-            <p>Lorem ipsum dolor eit Lorem ipsum dolor eit Lorem ipsum dolor eit Lorem ipsum dolor eit Lorem ipsum dolor eit Lorem ipsum dolor eit Lorem ipsum dolor eit Lorem ipsum dolor eit Lorem ipsum dolor eit Lorem ipsum dolor eit </p>
+            <p>{{atelierStore.currentAtelier.description}}</p>
           </div>
         </div>
       </div>

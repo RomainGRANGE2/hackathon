@@ -19,7 +19,7 @@
     <div class="lg:grid flex flex-col gap-y-4 lg:gap-y-0 grid-cols-12 px-6 lg:px-40 lg:my-10">
       <div class="col-span-9 flex flex-col gap-y-6 lg:pr-20">
         <p class="font-redressed text-xl">Description</p>
-        <p>Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit Lorem Ipsum dolor eit</p>
+        <p>{{eventStore.currentEvent.description}}</p>
       </div>
       <div class="col-span-3 flex flex-col p-6 gap-y-2 rounded-xl bg-white shadow-xl">
         <p class="font-bold">{{eventStore.currentEvent.prix}} € / personne</p>
@@ -278,7 +278,6 @@ fetch('https://localhost:7110/api/EvenementVisiteur', {
       return response.json();
     })
     .then(data => {
-      // Stockez les données récupérées dans la variable 'visitors'
       visitors.value = data;
     })
     .catch(error => {
