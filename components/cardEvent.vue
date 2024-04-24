@@ -27,12 +27,12 @@ const props = defineProps({
 });
 
 const date = computed(() => {
-  return "DATE" /*(
+  return (
     "Du " +
     formatAndParse(props.data.dateDebut) +
     " au " +
     formatAndParse(props.data.dateFin)
-  );*/
+  );
 });
 
 const formatAndParse = function (date) {
