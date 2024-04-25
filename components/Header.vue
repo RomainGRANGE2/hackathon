@@ -60,7 +60,6 @@ const navigation = [
   { name: 'Atelier', to: 'liste-atelier', admin: false },
   { name: 'Calendrier', to: 'calendrier', admin: true},
   { name: 'Stock', to: 'stock', admin: true },
-  { name: 'Réservation', to: 'reservation',admin: true },
 ]
 
 const isConnected = !!localStorage.getItem("accessToken")
