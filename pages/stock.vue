@@ -46,7 +46,7 @@
                       {{item.millesime}}
                     </td>
                     <td class="px-6 py-4 font-semibold text-gray-900">
-                      {{item.annotation}}
+                      {{item.annotation.length > 20 ? item.annotation.slice(0, 20) + '...' : item.annotation}}
                     </td>
                     <td class="px-6 py-4">
                         <div class="flex items-center">
@@ -68,6 +68,11 @@
                         </div>
                     </td>
                     <td class="px-6 py-4 flex gap-x-2">
+                      <div class="cursor-pointer">
+                        <NuxtLink :to="`/vin/${item.vinId}`">
+                          <svg-icon :path="mdiEyeOutline" type="mdi" class="text-gray-900" />
+                        </NuxtLink>
+                      </div>
                       <div @click="editVin(item)" class="cursor-pointer">
                         <svg-icon :path="mdiPencil" type="mdi" class="text-gray-900" />
                       </div>
@@ -172,10 +177,10 @@
 </template>
 <script setup>
 import {DialogPanel, DialogTitle, TransitionChild, TransitionRoot, Dialog} from "@headlessui/vue";
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiFolderPlusOutline, mdiPencil, mdiDelete, mdiEyeOutline } from '@mdi/js'
 
 const router = useRouter()
-import SvgIcon from '@jamescoyle/vue-icon';
-import { mdiFolderPlusOutline,mdiPlus,mdiMinus,mdiPencil,mdiDelete } from '@mdi/js'
 
 const isConnected = !!localStorage.getItem("accessToken")
 
