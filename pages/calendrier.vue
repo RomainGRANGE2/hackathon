@@ -55,7 +55,7 @@ export default {
           this.events.push(
             {
               title: event.evenementName,
-              time: { start: event.dateDebut, end: event.dateFin },
+              time: { start: event.dateDebut.replace("T", " "), end: event.dateFin.replace("T", " ") },
               isEditable: false,
               location: event.localisation,
               id: event.evenementId,
