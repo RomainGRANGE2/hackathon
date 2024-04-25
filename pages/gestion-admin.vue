@@ -30,7 +30,8 @@
                     <div>
                       <label for="last-name" class="block text-sm font-semibold leading-6 text-gray-900">Date</label>
                       <div class="mt-2.5">
-                        <input v-model="formAtelier.date" required type="date" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        {{formAtelier.date}}
+                        <input v-model="formAtelier.date" required type="datetime-local" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                       </div>
                     </div>
                     <div class="sm:col-span-2">
@@ -151,19 +152,19 @@
                       <div>
                         <label for="last-name" class="block text-sm font-semibold leading-6 text-gray-900">Date début</label>
                         <div class="mt-2.5">
-                          <input v-model="formEvent.dateDebut" required type="date" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                          <input v-model="formEvent.dateDebut" required type="datetime-local" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                         </div>
                       </div>
                       <div>
                         <label for="last-name" class="block text-sm font-semibold leading-6 text-gray-900">Date Fin</label>
                         <div class="mt-2.5">
-                          <input v-model="formEvent.dateFin" required type="date" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                          <input v-model="formEvent.dateFin" required type="datetime-local" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                         </div>
                       </div>
                       <div>
                         <label for="last-name" class="block text-sm font-semibold leading-6 text-gray-900">Date Limite</label>
                         <div class="mt-2.5">
-                          <input v-model="formEvent.dateLimit" required type="date" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                          <input v-model="formEvent.dateLimit" required type="datetime-local" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                         </div>
                       </div>
                       <div>
@@ -471,7 +472,6 @@ const validFormEcole = function (){
 }
 
 const handleCustomEvent = (data) => {
-  console.log(atelierSelected.value.ressource);
   atelierSelected.value.ressource = data;
 }
 </script>
