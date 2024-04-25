@@ -38,7 +38,12 @@
     <div v-if="isConnected" class="bg-white m-5 rounded-2xl px-4 py-6 sm:px-6 lg:px-8">
       <div class="flex justify-between">
         <p class="text-base font-semibold leading-6 text-gray-900">Participants</p>
-        <p>{{nbParticipants}}/{{eventStore.currentEvent.nombreParticipant}}</p>
+        <div class="flex items-center gap-x-4">
+          <p class="text-2xl"><span class="text-primary font-bold">{{nbParticipants}}</span> / {{eventStore.currentEvent.nombreParticipant}}</p>
+          <div @click="sendMaillAll()" class="bg-green-600 p-2 rounded-lg text-white cursor-pointer" v-if="nbParticipants == eventStore.currentEvent.nombreParticipant">
+            Envoyé le mail de confirmation
+          </div>
+        </div>
       </div>
       <div class="mt-5 flow-root">
         <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -131,6 +136,54 @@
         </transition>
       </div>
     </div>
+    <TransitionRoot appear :show="errorNbParticipant" as="template">
+      <Dialog as="div" @close="closeModal" class="relative z-10">
+        <TransitionChild
+            as="template"
+            enter="duration-300 ease-out"
+            enter-from="opacity-0"
+            enter-to="opacity-100"
+            leave="duration-200 ease-in"
+            leave-from="opacity-100"
+            leave-to="opacity-0"
+        >
+          <div class="fixed inset-0 bg-black/25" />
+        </TransitionChild>
+
+        <div class="fixed inset-0 overflow-y-auto">
+          <div
+              class="flex min-h-full items-center justify-center p-4 text-center"
+          >
+            <TransitionChild
+                as="template"
+                enter="duration-300 ease-out"
+                enter-from="opacity-0 scale-95"
+                enter-to="opacity-100 scale-100"
+                leave="duration-200 ease-in"
+                leave-from="opacity-100 scale-100"
+                leave-to="opacity-0 scale-95"
+            >
+              <DialogPanel
+                  class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+              >
+                <DialogTitle
+                    as="h3"
+                    class="text-lg font-medium leading-6 text-gray-900 flex items-center gap-x-2"
+                >
+                  <svg-icon size="30" type="mdi" :path="mdiClose" class="text-red-500 rounded-full border border-red-500 p-1" />
+                  Nombre de participants maximum atteint
+                </DialogTitle>
+                <div class="mt-2">
+                  <p class="text-sm text-gray-500">
+                    Le nombre maximum de participant à cet évenement a été ateint
+                  </p>
+                </div>
+              </DialogPanel>
+            </TransitionChild>
+          </div>
+        </div>
+      </Dialog>
+    </TransitionRoot>
   </div>
 </template>
 <script setup lang="ts">
@@ -140,6 +193,7 @@ import { mdiExportVariant, mdiClose,mdiCheckCircleOutline, mdiCloseCircleOutline
 import {useEventStore} from "~/stores/event";
 import {format, parse} from "date-fns";
 import {fr} from "date-fns/locale/fr";
+import {DialogPanel, DialogTitle, TransitionChild, TransitionRoot, Dialog} from "@headlessui/vue";
 const router = useRouter()
 
 const eventStore = useEventStore()
@@ -152,6 +206,12 @@ const ecole = ref(null)
 
 const show = ref(false)
 const verifMail = ref(false)
+
+const errorNbParticipant = ref(false)
+
+const closeModal = function (){
+  errorNbParticipant.value = false
+}
 
 const loadEvent = function (){
   event.value = allEvents.value.filter(x => x.atelierId == eventStore.currentEvent.atelierId && x.evenementId != eventStore.currentEvent.evenementId)
@@ -275,8 +335,6 @@ const signInEvent = function (){
         getAllVisiteurByEvenement()
       })
 
-      // ICI POUR get le last visiteur et lié celui-ci vers l'event
-
     } else {
       verifMail.value = false
     }
@@ -336,6 +394,8 @@ const setStatusToPaid = function (person){
         body: formData
       })
     })
+  } else {
+    errorNbParticipant.value = true
   }
 }
 
@@ -350,6 +410,30 @@ const setStatusToRefus = function (person){
     },
   }).then(async(result) => {
     getAllVisiteurByEvenement()
+  })
+}
+
+const sendMaillAll = function (){
+  const formData = new FormData()
+
+  console.log(visitors.value.filter(x => x.status == 1).map(x => x.visiteur.email))
+
+  const htmlContent = "<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;\">\n" +
+      "    <h1 style=\"color: #333333;\">Confirmation de participation</h1>\n" +
+      "    <p>Bonjour,</p>\n" +
+      "    <p>Rappel pour votre évenement du " + parseAndFormat(eventStore.currentEvent.dateDebut,"EEEE dd MMMM yyyy") + "</p>\n" +
+      "  </div>"
+
+  visitors.value.filter(x => x.status == 1).map(x => x.visiteur.email).forEach(x => formData.append("EmailsTo",x))
+  formData.append("Subject",`Rappel de votre Évenement : ${eventStore.currentEvent.evenementName}`)
+  formData.append("HtmlContent",htmlContent)
+
+  fetch("https://localhost:7110/api/Mail", {
+    method: "post",
+    headers: {
+      "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
+    },
+    body: formData
   })
 }
 
