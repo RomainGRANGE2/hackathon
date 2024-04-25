@@ -242,7 +242,7 @@ const getAllEcole = function (){
 getAllAteliers()
 getAllEcole()
 
-console.log('propr',props.data)
+console.log('props',props.data)
 
 const validFormEvent = function (){
   console.log(formEvent.value)
