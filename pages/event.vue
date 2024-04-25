@@ -138,6 +138,31 @@
         </transition>
       </div>
     </div>
+    <div aria-live="assertive" class="z-50 pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6">
+      <div class="flex w-full flex-col items-center space-y-4 sm:items-end">
+        <transition enter-active-class="transform ease-out duration-300 transition" enter-from-class="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2" enter-to-class="translate-y-0 opacity-100 sm:translate-x-0" leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
+          <div v-if="emailIsSend" class="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+            <div class="p-4">
+              <div class="flex items-start">
+                <div class="flex-shrink-0">
+                  <svg-icon type="mdi" :path="errorEmailSend ? mdiCheckCircleOutline : mdiCloseCircleOutline" :class="errorEmailSend ? 'text-green-400' : 'text-red-500'" />
+                </div>
+                <div class="ml-3 w-0 flex-1 pt-0.5">
+                  <p class="text-sm font-medium text-gray-900">{{errorEmailSend ? "Mail envoyé" : "Erreur lors de l'envoie du mail"}}</p>
+                  <p class="mt-1 text-sm text-gray-500">{{errorEmailSend ? "Les participants ont reçu un mail" : "Une erreur est survenu lors de l'envoie des mails"}}</p>
+                </div>
+                <div class="ml-4 flex flex-shrink-0">
+                  <button type="button" @click="emailIsSend = false" class="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    <span class="sr-only">Close</span>
+                    <svg-icon type="mdi" :path="mdiClose" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </transition>
+      </div>
+    </div>
     <TransitionRoot appear :show="errorNbParticipant" as="template">
       <Dialog as="div" @close="closeModal" class="relative z-10">
         <TransitionChild
@@ -413,8 +438,29 @@ const setStatusToRefus = function (person){
     },
   }).then(async(result) => {
     getAllVisiteurByEvenement()
+
+    const formData = new FormData();
+    const htmlContent = "<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;\">\n" +
+        "    <h1 style=\"color: #333333;\">Votre demande de participation a été refusé</h1>\n" +
+        "    <p>Bonjour,</p>\n" +
+        "    <p>Nous sommes désolé mais nous ne pouvons pas assuré votre présence à cet évenement</p>\n" +
+        "    <p>Nous espérons vous voir bientôt parmi nous.</p>\n" +
+        "  </div>"
+    formData.append('EmailsTo', person.visiteur.email);
+    formData.append('Subject', `Refus d'inscription à ${eventStore.currentEvent.evenementName}`);
+    formData.append('HtmlContent', htmlContent);
+    fetch("https://localhost:7110/api/Mail", {
+      method: "post",
+      headers: {
+        "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
+      },
+      body: formData
+    })
   })
 }
+
+const emailIsSend = ref(false)
+const errorEmailSend = ref(false)
 
 const sendMaillAll = function (){
   const formData = new FormData()
@@ -435,6 +481,13 @@ const sendMaillAll = function (){
       "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
     },
     body: formData
+  }).then((result) => {
+    if(result.ok){
+      errorEmailSend.value = true
+    } else {
+      errorEmailSend.value = false
+    }
+    emailIsSend.value = true
   })
 }
 
@@ -466,6 +519,13 @@ const finishEvent = function (){
       "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
     },
     body: formData
+  }).then((result) => {
+    if(result.ok){
+      errorEmailSend.value = true
+    } else {
+      errorEmailSend.value = false
+    }
+    emailIsSend.value = true
   })
 }
 
