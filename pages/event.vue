@@ -217,7 +217,7 @@ const getAllEcole = function (){
 getAllEcole()
 
 const parseAndFormat = function(date, formatWish){
-  return format(parse(date, "yyyy-MM-dd", new Date()), formatWish, {
+  return format(parse(date, "yyyy-MM-dd'T'HH:mm", new Date()), formatWish, {
     locale: fr,
   })
 }
@@ -305,34 +305,38 @@ const setStatusToPaid = function (person){
 
   const visiteurId = person.visiteurId
 
-  fetch(`https://localhost:7110/api/EvenementVisiteur?evenementId=${eventStore.currentEvent.evenementId}&visiteurId=${visiteurId}&status=1`, {
-    method: "put",
-    headers: {
-      "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
-    },
-  }).then(async(result) => {
-    getAllVisiteurByEvenement()
+  const isFull = nbParticipants.value == eventStore.currentEvent.nombreParticipant
 
-    const formData = new FormData();
-    const htmlContent = "<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;\">\n" +
-        "    <h1 style=\"color: #333333;\">Confirmation de participation</h1>\n" +
-        "    <p>Bonjour,</p>\n" +
-        "    <p>Nous avons le plaisir de vous informer que votre demande de participation à l'événement a été acceptée.</p>\n" +
-        "    <p><strong>Événement:</strong> " + eventStore.currentEvent.evenementName + " </p>\n" +
-        "    <p><strong>Date de l'événement:</strong>" + parseAndFormat(eventStore.currentEvent.dateDebut,"EEEE dd MMMM yyyy") + "</p>\n" +
-        "    <p>Nous espérons vous voir bientôt parmi nous.</p>\n" +
-        "  </div>"
-    formData.append('EmailsTo', person.visiteur.email);
-    formData.append('Subject', `Confirmation d'inscription à ${eventStore.currentEvent.evenementName}`);
-    formData.append('HtmlContent', htmlContent);
-    fetch("https://localhost:7110/api/Mail", {
-      method: "post",
+  if(!isFull){
+    fetch(`https://localhost:7110/api/EvenementVisiteur?evenementId=${eventStore.currentEvent.evenementId}&visiteurId=${visiteurId}&status=1`, {
+      method: "put",
       headers: {
         "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
       },
-      body: formData
+    }).then(async(result) => {
+      getAllVisiteurByEvenement()
+
+      const formData = new FormData();
+      const htmlContent = "<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;\">\n" +
+          "    <h1 style=\"color: #333333;\">Confirmation de participation</h1>\n" +
+          "    <p>Bonjour,</p>\n" +
+          "    <p>Nous avons le plaisir de vous informer que votre demande de participation à l'événement a été acceptée.</p>\n" +
+          "    <p><strong>Événement:</strong> " + eventStore.currentEvent.evenementName + " </p>\n" +
+          "    <p><strong>Date de l'événement:</strong>" + parseAndFormat(eventStore.currentEvent.dateDebut,"EEEE dd MMMM yyyy") + "</p>\n" +
+          "    <p>Nous espérons vous voir bientôt parmi nous.</p>\n" +
+          "  </div>"
+      formData.append('EmailsTo', person.visiteur.email);
+      formData.append('Subject', `Confirmation d'inscription à ${eventStore.currentEvent.evenementName}`);
+      formData.append('HtmlContent', htmlContent);
+      fetch("https://localhost:7110/api/Mail", {
+        method: "post",
+        headers: {
+          "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
+        },
+        body: formData
+      })
     })
-  })
+  }
 }
 
 const setStatusToRefus = function (person){
