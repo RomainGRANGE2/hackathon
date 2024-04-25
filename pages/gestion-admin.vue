@@ -24,35 +24,35 @@
                     <div>
                       <label for="first-name" class="block text-sm font-semibold leading-6 text-gray-900">Nom</label>
                       <div class="mt-2.5">
-                        <input v-model="formAtelier.atelierName" required type="text" autocomplete="given-name" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        <input v-model="formAtelier.atelierName" required type="text" autocomplete="given-name" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-900 sm:text-sm sm:leading-6" />
                       </div>
                     </div>
                     <div>
                       <label for="last-name" class="block text-sm font-semibold leading-6 text-gray-900">Date</label>
                       <div class="mt-2.5">
-                        <input v-model="formAtelier.date" required type="datetime-local" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        <input v-model="formAtelier.date" required type="datetime-local" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-900 sm:text-sm sm:leading-6" />
                       </div>
                     </div>
                     <div class="sm:col-span-2">
                       <label for="company" class="block text-sm font-semibold leading-6 text-gray-900">Thematique</label>
                       <div class="mt-2.5">
-                        <input v-model="formAtelier.thematique" required type="text" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        <input v-model="formAtelier.thematique" required type="text" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-900 sm:text-sm sm:leading-6" />
                       </div>
                     </div>
                     <div class="sm:col-span-2">
                       <label for="company" class="block text-sm font-semibold leading-6 text-gray-900">Ressources</label>
-                      <input type="file" @change="handleFileChange" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                      <input type="file" @change="handleFileChange" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-900 sm:text-sm sm:leading-6">
                     </div>
                     <div class="sm:col-span-2">
                       <label for="email" class="block text-sm font-semibold leading-6 text-gray-900">Image</label>
                       <div class="mt-2.5">
-                        <input multiple @change="handleImageChange" type="file" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        <input multiple @change="handleImageChange" type="file" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-900 sm:text-sm sm:leading-6" />
                       </div>
                     </div>
                     <div class="sm:col-span-2">
                       <label for="message" class="block text-sm font-semibold leading-6 text-gray-900">Description</label>
                       <div class="mt-2.5">
-                        <textarea v-model="formAtelier.description" rows="4" required class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        <textarea v-model="formAtelier.description" rows="4" required class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-900 sm:text-sm sm:leading-6" />
                       </div>
                     </div>
                   </div>
@@ -89,7 +89,7 @@
                   <div>
                     <label class="block text-sm font-semibold leading-6 text-gray-900">Nom</label>
                     <div class="mt-2.5">
-                      <input v-model="formEcole.ecoleName" required type="text" autocomplete="given-name" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                      <input v-model="formEcole.ecoleName" required type="text" autocomplete="given-name" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-900 sm:text-sm sm:leading-6" />
                     </div>
                   </div>
                 </div>
@@ -145,49 +145,49 @@
                       <div>
                         <label for="first-name" class="block text-sm font-semibold leading-6 text-gray-900">Nom</label>
                         <div class="mt-2.5">
-                          <input v-model="formEvent.evenementName" required type="text" autocomplete="given-name" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                          <input v-model="formEvent.evenementName" required type="text" autocomplete="given-name" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-900 sm:text-sm sm:leading-6" />
                         </div>
                       </div>
                       <div>
                         <label for="last-name" class="block text-sm font-semibold leading-6 text-gray-900">Date début</label>
                         <div class="mt-2.5">
-                          <input v-model="formEvent.dateDebut" required type="datetime-local" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                          <input v-model="formEvent.dateDebut" required type="datetime-local" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-900 sm:text-sm sm:leading-6" />
                         </div>
                       </div>
                       <div>
                         <label for="last-name" class="block text-sm font-semibold leading-6 text-gray-900">Date Fin</label>
                         <div class="mt-2.5">
-                          <input v-model="formEvent.dateFin" required type="datetime-local" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                          <input v-model="formEvent.dateFin" required type="datetime-local" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-900 sm:text-sm sm:leading-6" />
                         </div>
                       </div>
                       <div>
                         <label for="last-name" class="block text-sm font-semibold leading-6 text-gray-900">Date Limite</label>
                         <div class="mt-2.5">
-                          <input v-model="formEvent.dateLimit" required type="datetime-local" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                          <input v-model="formEvent.dateLimit" required type="datetime-local" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-900 sm:text-sm sm:leading-6" />
                         </div>
                       </div>
                       <div>
                         <label for="last-name" class="block text-sm font-semibold leading-6 text-gray-900">Localisation</label>
                         <div class="mt-2.5">
-                          <input v-model="formEvent.localisation" required type="text" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                          <input v-model="formEvent.localisation" required type="text" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-900 sm:text-sm sm:leading-6" />
                         </div>
                       </div>
                       <div>
                         <label for="last-name" class="block text-sm font-semibold leading-6 text-gray-900">Nombre participant</label>
                         <div class="mt-2.5">
-                          <input v-model="formEvent.nombreParticipant" required type="number" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                          <input v-model="formEvent.nombreParticipant" required type="number" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-900 sm:text-sm sm:leading-6" />
                         </div>
                       </div>
                       <div>
                         <label for="last-name" class="block text-sm font-semibold leading-6 text-gray-900">Nombre dégustation</label>
                         <div class="mt-2.5">
-                          <input v-model="formEvent.nombreDegustation" required type="number" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                          <input v-model="formEvent.nombreDegustation" required type="number" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-900 sm:text-sm sm:leading-6" />
                         </div>
                       </div>
                       <div>
                         <label for="last-name" class="block text-sm font-semibold leading-6 text-gray-900">Prix</label>
                         <div class="mt-2.5">
-                          <input v-model="formEvent.prix" required type="number" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                          <input v-model="formEvent.prix" required type="number" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-900 sm:text-sm sm:leading-6" />
                         </div>
                       </div>
                       <div>
@@ -210,13 +210,13 @@
                       <div class="sm:col-span-2">
                         <label class="block text-sm font-semibold leading-6 text-gray-900">Image</label>
                         <div class="mt-2.5">
-                          <input multiple @change="handleImageChange" id="imageFile" type="file" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                          <input multiple @change="handleImageChange" id="imageFile" type="file" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-900 sm:text-sm sm:leading-6" />
                         </div>
                       </div>
                       <div class="sm:col-span-2">
                         <label for="message" class="block text-sm font-semibold leading-6 text-gray-900">Description</label>
                         <div class="mt-2.5">
-                          <textarea v-model="formEvent.description" rows="4" required class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                          <textarea v-model="formEvent.description" rows="4" required class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-900 sm:text-sm sm:leading-6" />
                         </div>
                       </div>
                     </div>
