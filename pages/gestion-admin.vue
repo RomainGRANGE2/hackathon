@@ -1,12 +1,13 @@
 <template>
-  <div class="px-6 lg:px-40">
-    <div class="grid grid-cols-12">
+  <div class="px-6 lg:px-40 mt-4">
+    <div class="grid gap-6 grid-cols-12">
       <div class="col-span-4 flex flex-col gap-y-4">
-        <div v-for="item in ateliers" class="py-4 cursor-pointer hover:text-gray-700" @click="setSelectAtelier(item)">
+        <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">Liste Ateliers</h1>
+        <div v-for="item in ateliers" class="py-4 cursor-pointer hover:text-gray-700 bg-purple-100 p-4 rounded-lg" @click="setSelectAtelier(item)">
           <p>{{item.atelierName}}</p>
         </div>
         <div class="py-4 cursor-pointer hover:text-gray-700" @click="addAtelier()" >
-          <svg-icon :path="mdiNewBox" type="mdi" class="w-8 h-8" />
+          <button type="button" class="text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Ajouter</button>
         </div>
       </div>
       <div class="col-span-8">
