@@ -4,32 +4,84 @@
       <p class="font-redressed text-2xl">Liste de vos vins</p>
       <svg-icon @click="addNewVin()" class="cursor-pointer p-4 bg-primary text-white rounded-md" size="60" type="mdi" :path="mdiFolderPlusOutline" />
     </div>
-    <div class="grid grid-cols-12 gap-4">
-      <div class="col-span-3 bg-primary p-4 text-white rounded-md mt-4" v-for="item in allVins">
-        <p class="text-center font-redressed text-xl">{{item.nom}}</p>
-        <p>Cépage: {{item.cepage}}</p>
-        <p>Région: {{item.region}}</p>
-        <p>Millesime: {{item.millesime}}</p>
-        <p>Annotation: {{item.annotation}}</p>
-        <p>Quantité: {{item.quatite}}</p>
-        <div class="flex justify-end">
-          <div class="bg-white p-2 rounded-md flex gap-x-2">
-            <div @click="addVins(item)" class="bg-green-400 cursor-pointer">
-              <svg-icon :path="mdiPlus" type="mdi" />
-            </div>
-            <div @click="lessVins(item)" class="bg-red-400 cursor-pointer">
-              <svg-icon :path="mdiMinus" type="mdi" />
-            </div>
-            <div @click="editVin(item)" class="cursor-pointer">
-              <svg-icon :path="mdiPencil" type="mdi" class="text-black" />
-            </div>
-            <div @click="deleteVin(item)" class="cursor-pointer">
-              <svg-icon :path="mdiDelete" type="mdi" class="text-red-500" />
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        Vin
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Cépage
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Région
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Millesime
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Annotation
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Quantité
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="bg-white border-b hover:bg-gray-50" v-for="item in allVins">
+                    <td class="px-6 py-4 font-semibold text-gray-900">
+                      {{item.nom}}
+                    </td>
+                    <td class="px-6 py-4 font-semibold text-gray-900">
+                      {{item.cepage}}
+                    </td>
+                    <td class="px-6 py-4 font-semibold text-gray-900">
+                      {{item.region}}
+                    </td>
+                    <td class="px-6 py-4 font-semibold text-gray-900">
+                      {{item.millesime}}
+                    </td>
+                    <td class="px-6 py-4 font-semibold text-gray-900">
+                      {{item.annotation}}
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center">
+                            <button @click="lessVins(item)" class="inline-flex items-center justify-center p-1 me-3 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200" type="button">
+                                <span class="sr-only">Quantity button</span>
+                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                </svg>
+                            </button>
+                            <div>
+                                <input type="number" id="first_product" class="bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1" placeholder="1" disabled v-model="item.quatite"/>
+                            </div>
+                            <button @click="addVins(item)" class="inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200" type="button">
+                                <span class="sr-only">Quantity button</span>
+                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 flex gap-x-2">
+                      <div @click="editVin(item)" class="cursor-pointer">
+                        <svg-icon :path="mdiPencil" type="mdi" class="text-gray-900" />
+                      </div>
+                      <div @click="deleteVin(item)" class="cursor-pointer">
+                        <svg-icon :path="mdiDelete" type="mdi" class="text-red-500" />
+                      </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
+
+    
+
     <TransitionRoot appear :show="isOpen" as="template">
       <Dialog as="div" @close="closeModal" class="relative z-10">
         <TransitionChild
