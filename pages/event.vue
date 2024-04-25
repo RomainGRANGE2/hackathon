@@ -41,7 +41,7 @@
         <div class="flex items-center gap-x-4">
           <p class="text-2xl"><span class="text-primary font-bold">{{nbParticipants}}</span> / {{eventStore.currentEvent.nombreParticipant}}</p>
           <div @click="sendMaillAll()" class="bg-green-600 p-2 rounded-lg text-white cursor-pointer" v-if="nbParticipants == eventStore.currentEvent.nombreParticipant">
-            Envoyé le mail de confirmation
+            Envoyer le rappel
           </div>
         </div>
       </div>

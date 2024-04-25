@@ -30,7 +30,6 @@
                     <div>
                       <label for="last-name" class="block text-sm font-semibold leading-6 text-gray-900">Date</label>
                       <div class="mt-2.5">
-                        {{formAtelier.date}}
                         <input v-model="formAtelier.date" required type="datetime-local" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                       </div>
                     </div>
@@ -47,7 +46,7 @@
                     <div class="sm:col-span-2">
                       <label for="email" class="block text-sm font-semibold leading-6 text-gray-900">Image</label>
                       <div class="mt-2.5">
-                        <input id="imageFile" type="file" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        <input multiple @change="handleImageChange" type="file" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                       </div>
                     </div>
                     <div class="sm:col-span-2">
@@ -209,9 +208,9 @@
                         </div>
                       </div>
                       <div class="sm:col-span-2">
-                        <label for="email" class="block text-sm font-semibold leading-6 text-gray-900">Image</label>
+                        <label class="block text-sm font-semibold leading-6 text-gray-900">Image</label>
                         <div class="mt-2.5">
-                          <input id="imageFile" type="file" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                          <input multiple @change="handleImageChange" id="imageFile" type="file" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                         </div>
                       </div>
                       <div class="sm:col-span-2">
@@ -253,6 +252,8 @@ const isConnected = !!localStorage.getItem("accessToken")
 if(!isConnected){
   router.push("/")
 }
+
+const files = ref([])
 
 const ateliers = ref(null)
 const atelierSelected = ref(null)
@@ -350,8 +351,17 @@ const addAtelier = function (){
 
 const validFormAtelier = function (){
 
-  const url = newAtelier.value ? "https://localhost:7110/api/Atelier" : `https://localhost:7110/api/Atelier/${atelierSelected.value.atelierId}`
   const formData = new FormData();
+
+  console.log(files.value)
+
+  if(files.value.length > 0){
+    files.value.forEach(file => {
+      formData.append('imageFiles', file, file.name);
+    });
+  }
+
+  const url = newAtelier.value ? "https://localhost:7110/api/Atelier" : `https://localhost:7110/api/Atelier/${atelierSelected.value.atelierId}`
   formData.append("AtelierName",formAtelier.value.atelierName)
   formData.append("Description",formAtelier.value.description)
   formData.append("Thematique",formAtelier.value.thematique)
@@ -422,9 +432,17 @@ const deleteAtelier = function (){
 }
 
 const validFormEvent = function (){
-  console.log(formEvent.value)
 
   const formData = new FormData();
+
+  if(files.value.length > 0){
+    files.value.forEach(file => {
+      formData.append('ImageFiles', file, file.name);
+    });
+  }
+
+  console.log(files.value)
+
   formData.append("EvenementName",formEvent.value.evenementName)
   formData.append("Description",formEvent.value.description)
   formData.append("DateDebut",formEvent.value.dateDebut)
@@ -433,7 +451,6 @@ const validFormEvent = function (){
   formData.append("Localisation",formEvent.value.localisation)
   formData.append("NombreParticipant",formEvent.value.nombreParticipant)
   formData.append("NombreDegustation",formEvent.value.nombreDegustation)
-  formData.append("ImageFiles",formEvent.value.imageFiles)
   formData.append("Prix",formEvent.value.prix)
   if(formEvent.value.ecoleId != null){
     formData.append("EcoleId",formEvent.value.ecoleId)
@@ -471,7 +488,12 @@ const validFormEcole = function (){
   })
 }
 
-const handleCustomEvent = (data) => {
-  atelierSelected.value.ressource = data;
+const handleImageChange = function (event){
+  const target = event.target
+  if (target.files) {
+    files.value = Array.from(target.files);
+  }
 }
+
+
 </script>
