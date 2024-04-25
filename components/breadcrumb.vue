@@ -11,7 +11,7 @@
       </li>
       <li v-for="page in props.pages" :key="page.name" class="flex">
         <div class="flex items-center">
-          <svg class="h-full w-6 flex-shrink-0 text-black" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" aria-hidden="true">
+          <svg class="h-full flex-shrink-0 text-black" width="12" height="22" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" aria-hidden="true">
             <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
           </svg>
           <nuxt-link :to="page.href" class="ml-4 text-sm font-medium">{{ page.name }}</nuxt-link>
