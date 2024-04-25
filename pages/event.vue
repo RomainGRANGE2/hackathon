@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="cursor-pointer">
-        <div @click="finishEvent()" class="p-2 px-4 bg-green-600 cursor-pointer rounded-md text-white">
+        <div v-if="isConnected" @click="finishEvent()" class="p-2 px-4 bg-green-600 rounded-md text-white">
           Evenement terminé
         </div>
       </div>
@@ -23,7 +23,7 @@
         <p class="font-redressed text-xl">Description</p>
         <p>{{eventStore.currentEvent.description}}</p>
       </div>
-      <div class="col-span-3 flex flex-col p-6 gap-y-2 rounded-xl bg-white shadow-xl">
+      <div v-if="true" class="col-span-3 flex flex-col p-6 gap-y-2 rounded-xl bg-white shadow-xl">
         <p class="font-bold">{{eventStore.currentEvent.prix}} € / personne</p>
         <input v-model="email" type="email" class="rounded-2xl border-gray-400 border pl-4 py-2" placeholder="Adresse e-mail">
         <div class="flex flex-col gap-y-2">
@@ -32,12 +32,12 @@
             <option v-for="item in allEcoles" :value="item.ecoleId">{{item.ecoleName}}</option>
           </select>
         </div>
-        <div @click="signInEvent()" class="bg-primary w-full rounded-2xl text-center py-2 cursor-pointer text-white">
+        <div v-if="true" @click="signInEvent()" class="bg-primary w-full rounded-2xl text-center py-2 cursor-pointer text-white"> <!--nbParticipants > eventStore.currentEvent.nombreParticipant-->
           S'inscrire
         </div>
       </div>
     </div>
-    <div v-if="isConnected" class="bg-white m-5 rounded-2xl px-4 py-6 sm:px-6 lg:px-8">
+    <div v-if="isConnected" class="bg-white m-5 rounded-2xl py-6 px-6 lg:mx-40">
       <div class="flex justify-between">
         <p class="text-base font-semibold leading-6 text-gray-900">Participants</p>
         <div class="flex items-center gap-x-4">
@@ -96,7 +96,7 @@
         <div class="flex flex-col gap-y-4">
           <div v-for="item in event" class="grid gap-x-4 grid-cols-12 bg-white rounded-xl">
             <div class="col-span-5">
-              <img src="/_nuxt/assets/images/degust1.png" alt="image" class="lg:h-60 h-48 w-full object-cover rounded-l-xl">
+              <img :src="item.imageEvenement.length > 0 ? 'data:image/png;base64,'+item.imageEvenement[item.imageEvenement.length-1].data : '/_nuxt/assets/images/degust1.png'" alt="image" class="lg:h-60 h-48 w-full object-cover rounded-l-xl">
             </div>
             <div class="col-span-7 flex flex-col py-6 pr-6 relative">
               <p>{{item.evenementName}}</p>
@@ -505,10 +505,27 @@ function base64ToBlob(base64, mimeType) {
 const finishEvent = function (){
   const formData = new FormData()
 
-  const htmlContent = "TERMINE"
+  const htmlContent = "<div style=\"font-family: Arial, sans-serif;\">\n" +
+      "        <h1>Merci pour votre participation à notre événement !</h1>\n" +
+      "        <p>\n" +
+      "            Bonjour,\n" +
+      "        </p>\n" +
+      "        <p>\n" +
+      "            Nous tenons à vous remercier chaleureusement pour avoir participé à notre récent événement. Votre présence et votre contribution ont été très appréciées.\n" +
+      "        </p>\n" +
+      "        <p>\n" +
+      "            Vous trouverez ci-joint le récapitulatif de l'événement\n" +
+      "        </p>\n" +
+      "        <p>\n" +
+      "            Si vous avez des questions ou des commentaires, n'hésitez pas à nous contacter.\n" +
+      "        </p>\n" +
+      "        <p>\n" +
+      "            Cordialement,<br>\n" +
+      "        </p>\n" +
+      "    </div>"
 
   visitors.value.filter(x => x.status == 1).map(x => x.visiteur.email).forEach(x => formData.append("EmailsTo",x))
-  formData.append("Subject",`Evenement terminé : ${eventStore.currentEvent.evenementName}`)
+  formData.append("Subject",`Récapitulatif évenement : ${eventStore.currentEvent.evenementName}`)
   formData.append("HtmlContent",htmlContent)
   const pdfBlob = base64ToBlob(eventStore.currentEvent.atelier.ressource, 'application/pdf');
   formData.append('Attachment', pdfBlob, `${eventStore.currentEvent.evenementName}.pdf`);
