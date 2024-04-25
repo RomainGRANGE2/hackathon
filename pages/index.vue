@@ -9,10 +9,6 @@
       </span>
         <span class="relative">Liste des Ateliers</span>
       </a>
-
-      <!--<div class="bg-primary bg-opacity-60 py-1 px-3 cursor-pointer  rounded-md font-roboto">
-        Listes des Ateliers
-      </div>-->
     </div>
     <div class="flex flex-col gap-y-20">
       <div class="flex flex-col px-6 lg:px-40">
@@ -29,23 +25,10 @@
       </div>
       <div class="bg-[url('/_nuxt/assets/images/bottle.svg')] relative mb-60" style="height: 490px; left: -100px;">
         <div class="absolute top-8 right-0 border-4 border-primary lg:w-1/3 bg-white p-5">
-          <img src="/_nuxt/assets/images/prof.jpg" alt="prof" class="w-full">
-          <p class="text-center font-redressed text-4xl my-4">Qui suis-je ?</p>
-          <p>Découvrez Olivier, un passionné de vin et d'œnologie dont l'amour pour le divin nectar transcende les frontières du simple plaisir gustatif pour devenir un art de vivre.
-            Depuis son plus jeune âge, Olivier a été captivé par l'univers fascinant du vin. Ce n'est pas seulement une boisson pour lui, mais une véritable passion qui l'a conduit à explorer les vignobles du monde entier, à déguster des cépages variés et à perfectionner son palais pour distinguer les subtilités des arômes et des saveurs.</p>
-        </div>
-      </div>
-
-      <div class="hidden w-full bg-primary px-6 lg:px-40">
-        <div class="flex lg:flex-row flex-col gap-y-4 lg:gap-y-0 gap-x-10 py-6">
-          <div class="lg:w-1/2">
-            <img src="/_nuxt/assets/images/prof.jpg" alt="prof">
-          </div>
-          <div class="lg:w-1/2 flex flex-col justify-center gap-y-4 text-white">
-            <p class="text-left font-redressed text-4xl">Qui suis-je ?</p>
-            <p>Découvrez Olivier, un passionné de vin et d'œnologie dont l'amour pour le divin nectar transcende les frontières du simple plaisir gustatif pour devenir un art de vivre.
-              Depuis son plus jeune âge, Olivier a été captivé par l'univers fascinant du vin. Ce n'est pas seulement une boisson pour lui, mais une véritable passion qui l'a conduit à explorer les vignobles du monde entier, à déguster des cépages variés et à perfectionner son palais pour distinguer les subtilités des arômes et des saveurs.</p>
-          </div>
+          <img :src="infoDescription?.image" alt="prof" class="w-full">
+          <svg-icon v-if="isConnected" class="absolute cursor-pointer text-white h-10 w-10 p-2 bg-primary rounded-full top-8 right-8 p-1" type="mdi" :path="mdiPencil" />
+          <p class="text-center font-redressed text-4xl my-4">{{infoDescription?.title}}</p>
+          <p class="text-justify">{{ infoDescription?.description }}</p>
         </div>
       </div>
     </div>
@@ -54,8 +37,13 @@
 <script setup>
 
 import CardEvent from "~/components/cardEvent.vue";
+import SvgIcon from "@jamescoyle/vue-icon";
+import { mdiPencil } from '@mdi/js'
 
 const event = ref([])
+
+const isConnected = !!localStorage.getItem("accessToken")
+
 
 const experience = ref([
   {
@@ -81,5 +69,26 @@ fetch("https://localhost:7110/api/Evenement", {
   event.value = await result.json()
   console.log(event.value)
 })
+
+const infoDescription = ref(null)
+
+const getHomeDescriptionbyId = function () {
+  fetch('https://localhost:7110/api/HomeDescription', {
+    method: "GET",
+    headers: {
+      "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+    }
+  })
+      .then(async (result) => {
+        const homeDescriptionResult = await result.json();
+        infoDescription.value = homeDescriptionResult[0];
+        console.log(infoDescription.value)
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération de la description de la maison :', error);
+      });
+};
+
+getHomeDescriptionbyId()
 
 </script>
