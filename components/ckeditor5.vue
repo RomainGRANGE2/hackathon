@@ -35,6 +35,9 @@ export default {
     };
   },
   watch: {
+    ressource(newVal) {
+      this.editorData = newVal;
+    },
     editorData(newVal) {
       this.$emit('custom-event', newVal);
     }

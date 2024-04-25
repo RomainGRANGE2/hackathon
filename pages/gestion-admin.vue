@@ -471,7 +471,6 @@ const validFormEcole = function (){
 }
 
 const handleCustomEvent = (data) => {
-  console.log(atelierSelected.value.ressource);
   atelierSelected.value.ressource = data;
 }
 </script>
