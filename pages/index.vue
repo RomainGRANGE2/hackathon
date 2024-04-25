@@ -23,12 +23,25 @@
           <p class="lg:text-center">{{item.desc}}</p>
         </div>
       </div>
-      <div class="bg-[url('/_nuxt/assets/images/bottle.svg')] relative mb-60" style="height: 490px; left: -100px;">
-        <div class="absolute top-8 right-0 border-4 border-primary lg:w-1/3 bg-white p-5">
+
+      <div class="hidden lg:block bg-[url('/_nuxt/assets/images/bottle.svg')] relative mb-60 -left-24" style="height: 490px;">
+        <div class="absolute top-8 right-0 border-4 border-primary w-1/3 bg-white p-5 rounded-lg">
           <img :src="infoDescription?.image" alt="prof" class="w-full">
           <svg-icon v-if="isConnected" @click="openDialogFormDesc()" class="absolute cursor-pointer text-white h-10 w-10 p-2 bg-primary rounded-full top-8 right-8 p-1" type="mdi" :path="mdiPencil" />
           <p class="text-center font-redressed text-4xl my-4">{{infoDescription?.title}}</p>
           <p class="text-justify">{{ infoDescription?.description }}</p>
+        </div>
+      </div>
+    </div> 
+    <div class="lg:hidden w-full bg-primary px-6">
+      <div class="flex md:flex-row flex-col gap-y-4 md:gap-y-0 gap-x-10 py-6">
+        <div class="relative md:w-1/2">
+          <svg-icon v-if="isConnected" @click="openDialogFormDesc()" class="absolute cursor-pointer text-white h-10 w-10 p-2 bg-primary rounded-full top-4 right-4 p-1" type="mdi" :path="mdiPencil" />
+          <img :src="infoDescription?.image" alt="prof">
+        </div>
+        <div class="md:w-1/2 flex flex-col justify-center gap-y-4 text-white">
+          <p class="text-left font-redressed text-4xl">{{infoDescription?.title}}</p>
+          <p>{{ infoDescription?.description }}</p>
         </div>
       </div>
     </div>
