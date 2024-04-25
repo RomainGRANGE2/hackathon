@@ -3,17 +3,17 @@
     <div class="grid gap-6 grid-cols-12">
       <div class="col-span-4 flex flex-col gap-y-4">
         <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">Liste Ateliers</h1>
-        <div v-for="item in ateliers" class="py-4 cursor-pointer hover:text-gray-700 bg-purple-100 p-4 rounded-lg" @click="setSelectAtelier(item)">
+        <div v-for="item in ateliers" class="py-4 text-red-900 hover:bg-opacity-20 cursor-pointer bg-primary bg-opacity-10 p-4 rounded-lg" @click="setSelectAtelier(item)">
           <p>{{item.atelierName}}</p>
         </div>
         <div class="py-4 cursor-pointer hover:text-gray-700" @click="addAtelier()" >
-          <button type="button" class="text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Ajouter</button>
+          <button type="button" class="text-white bg-primary hover:bg-red-900 focus:outline-none focus:ring-4 focus:ring-primary font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-primary dark:hover:bg-red-900 dark:focus:ring-primary">Ajouter</button>
         </div>
       </div>
       <div class="col-span-8">
         <div v-if="atelierSelected != null || newAtelier" class="flex flex-col gap-y-4">
           <Disclosure v-slot="{ open }">
-            <DisclosureButton class="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
+            <DisclosureButton class="flex w-full justify-between rounded-lg bg-primary bg-opacity-10 px-4 py-2 text-left text-sm font-medium text-red-900 hover:bg-opacity-20 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
               <p>{{newAtelier ? "Créer un atelier" : "Infos de l'atelier"}}</p>
               <svg-icon :path="open ? mdiChevronDown : mdiChevronUp" type="mdi" />
             </DisclosureButton>
@@ -68,7 +68,7 @@
             </DisclosurePanel>
           </Disclosure>
           <Disclosure v-if="!newAtelier" v-slot="{ open }">
-            <DisclosureButton class="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
+            <DisclosureButton class="flex w-full justify-between rounded-lg bg-primary bg-opacity-10 px-4 py-2 text-left text-sm font-medium text-red-900 hover:bg-opacity-20 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
               <p>Evenement attachés à cet atelier</p>
               <svg-icon :path="open ? mdiChevronDown : mdiChevronUp" type="mdi" />
             </DisclosureButton>
@@ -80,7 +80,7 @@
             </DisclosurePanel>
           </Disclosure>
           <Disclosure v-if="newAtelier" v-slot="{ open }">
-            <DisclosureButton class="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
+            <DisclosureButton class="flex w-full justify-between rounded-lg bg-primary bg-opacity-10 px-4 py-2 text-left text-sm font-medium text-red-900 hover:bg-opacity-20 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
               <p>Créer une école</p>
               <svg-icon :path="open ? mdiChevronDown : mdiChevronUp" type="mdi" />
             </DisclosureButton>
