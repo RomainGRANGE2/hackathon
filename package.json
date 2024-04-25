@@ -10,6 +10,9 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "github:ckeditor/ckeditor5-build-classic",
+    "@ckeditor/ckeditor5-upload": "github:ckeditor/ckeditor5-upload",
+    "@ckeditor/ckeditor5-vue": "^5.1.0",
     "@headlessui/vue": "^1.7.20",
     "@jamescoyle/vue-icon": "^0.1.2",
     "@mdi/js": "^7.4.47",
