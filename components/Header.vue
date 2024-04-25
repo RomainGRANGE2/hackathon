@@ -59,9 +59,9 @@ import { mdiMenu, mdiClose, mdiAccountCircle } from '@mdi/js';
 const router = useRouter()
 
 const navigation = [
-  { name: 'Atelier', to: router.resolve({ path: '/liste-atelier' }).href, admin: false },
-  { name: 'Calendrier', to: router.resolve({ path: '/calendrier' }).href, admin: true },
-  { name: 'Stock', to: router.resolve({ path: '/stock' }).href, admin: true },
+  { name: 'Atelier', to: '/liste-atelier', admin: false },
+  { name: 'Calendrier', to:'/calendrier', admin: true },
+  { name: 'Stock', to:'/stock', admin: true },
 ]
 
 const isConnected = !!localStorage.getItem("accessToken")
