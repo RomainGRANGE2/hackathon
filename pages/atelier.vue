@@ -43,7 +43,6 @@ if(atelierStore.currentAtelier == null){
   }).then(async(result) => {
     const eventResult = await result.json()
     events.value = eventResult.filter(x => x.atelierId == atelierStore.currentAtelier.atelierId)
-    console.log(events.value)
   })
 }
 
