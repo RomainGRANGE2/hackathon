@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-white">
+  <header class="bg-white border-gray-200 border-b">
     <nav class="flex items-center justify-between p-6 lg:px-40" aria-label="Global">
       <div class="flex lg:flex-1">
         <nuxt-link to="/" class="-m-1.5 p-1.5">

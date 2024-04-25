@@ -12,7 +12,7 @@
     </div>
     <div class="flex flex-col gap-y-20">
       <div class="flex flex-col px-6 lg:px-40">
-        <p class="font-redressed text-center text-3xl py-10">Listes des Évènements à venir</p>
+        <p class="font-redressed text-center text-3xl py-10">Listes des évènements à venir</p>
         <div class="lg:grid grid-cols-12 lg:gap-8 gap-4 flex overflow-scroll scrollbar-hide">
           <card-event class="lg:col-span-3" v-for="(item,i) in event" :data="item" />
         </div>
@@ -26,24 +26,123 @@
       <div class="bg-[url('/_nuxt/assets/images/bottle.svg')] relative mb-60" style="height: 490px; left: -100px;">
         <div class="absolute top-8 right-0 border-4 border-primary lg:w-1/3 bg-white p-5">
           <img :src="infoDescription?.image" alt="prof" class="w-full">
-          <svg-icon v-if="isConnected" class="absolute cursor-pointer text-white h-10 w-10 p-2 bg-primary rounded-full top-8 right-8 p-1" type="mdi" :path="mdiPencil" />
+          <svg-icon v-if="isConnected" @click="openDialogFormDesc()" class="absolute cursor-pointer text-white h-10 w-10 p-2 bg-primary rounded-full top-8 right-8 p-1" type="mdi" :path="mdiPencil" />
           <p class="text-center font-redressed text-4xl my-4">{{infoDescription?.title}}</p>
           <p class="text-justify">{{ infoDescription?.description }}</p>
         </div>
       </div>
     </div>
+    <TransitionRoot appear :show="isOpen" as="template">
+      <Dialog as="div" @close="closeModal" class="relative z-10">
+        <TransitionChild
+            as="template"
+            enter="duration-300 ease-out"
+            enter-from="opacity-0"
+            enter-to="opacity-100"
+            leave="duration-200 ease-in"
+            leave-from="opacity-100"
+            leave-to="opacity-0"
+        >
+          <div class="fixed inset-0 bg-black/25" />
+        </TransitionChild>
+
+        <div class="fixed inset-0 overflow-y-auto">
+          <div
+              class="flex min-h-full items-center justify-center p-4 text-center"
+          >
+            <TransitionChild
+                as="template"
+                enter="duration-300 ease-out"
+                enter-from="opacity-0 scale-95"
+                enter-to="opacity-100 scale-100"
+                leave="duration-200 ease-in"
+                leave-from="opacity-100 scale-100"
+                leave-to="opacity-0 scale-95"
+            >
+              <DialogPanel
+                  class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+              >
+                <DialogTitle
+                    as="h3"
+                    class="text-lg font-medium leading-6 text-gray-900"
+                >
+                  Modification de la présentation
+                </DialogTitle>
+                <div class="isolate">
+                  <form @submit.prevent="validFormDesc()">
+                    <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+                      <div>
+                        <label for="first-name" class="block text-sm font-semibold leading-6 text-gray-900">Image</label>
+                        <div class="mt-2.5">
+                          <input v-model="formDesc.image" type="text" autocomplete="given-name" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        </div>
+                      </div>
+                      <div>
+                        <label for="last-name" class="block text-sm font-semibold leading-6 text-gray-900">Title</label>
+                        <div class="mt-2.5">
+                          <input v-model="formDesc.title" type="text" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        </div>
+                      </div>
+                      <div>
+                        <label for="last-name" class="block text-sm font-semibold leading-6 text-gray-900">Description</label>
+                        <div class="mt-2.5">
+                          <input v-model="formDesc.description" type="text" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mt-10">
+                      <button type="submit" class="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Modifier</button>
+                    </div>
+                  </form>
+                </div>
+              </DialogPanel>
+            </TransitionChild>
+          </div>
+        </div>
+      </Dialog>
+    </TransitionRoot>
   </div>
 </template>
 <script setup>
 
 import CardEvent from "~/components/cardEvent.vue";
 import SvgIcon from "@jamescoyle/vue-icon";
-import { mdiPencil } from '@mdi/js'
+import {mdiClose, mdiPencil} from '@mdi/js'
+import {Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot} from "@headlessui/vue";
 
 const event = ref([])
 
 const isConnected = !!localStorage.getItem("accessToken")
 
+const formDesc = ref({
+  homeDescriptionId: 1,
+  image: null,
+  title: null,
+  description: null,
+})
+
+const closeModal = function (){
+  isOpen.value = false
+}
+
+const isOpen = ref(false)
+const openDialogFormDesc = function(){
+  isOpen.value = true
+}
+
+const validFormDesc = function (){
+  console.log(formDesc.value)
+  fetch(`https://localhost:7110/api/HomeDescription/1`, {
+    method: "put",
+    headers: {
+      'Content-Type': 'application/json',
+      "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
+    },
+    body: JSON.stringify(formDesc.value)
+  }).then(async(result) => {
+    isOpen.value = false
+  })
+}
 
 const experience = ref([
   {
@@ -82,6 +181,7 @@ const getHomeDescriptionbyId = function () {
       .then(async (result) => {
         const homeDescriptionResult = await result.json();
         infoDescription.value = homeDescriptionResult[0];
+        formDesc.value = infoDescription.value
         console.log(infoDescription.value)
       })
       .catch(error => {
