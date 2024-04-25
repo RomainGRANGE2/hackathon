@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col rounded-xl">
     <div>
-      <img src="/_nuxt/assets/images/degust2.png" alt="image" class="rounded-t-xl">
+      <img :src="props.data.imageEvenement.length > 0 ? 'data:image/png;base64,'+props.data.imageEvenement[props.data.imageEvenement.length-1].data : '/_nuxt/assets/images/degust1.png'" alt="image" class="rounded-t-xl">
     </div>
     <div class="bg-primary bg-opacity-10 p-4 rounded-b-xl">
       <div class="flex justify-between items-center">
@@ -124,7 +124,7 @@
                     <div class="sm:col-span-2">
                       <label for="email" class="block text-sm font-semibold leading-6 text-gray-900">Image</label>
                       <div class="mt-2.5">
-                        <input id="imageFile" type="file" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        <input multiple @change="handleImageChange" type="file" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                       </div>
                     </div>
                     <div class="sm:col-span-2">
@@ -162,6 +162,8 @@ const props = defineProps({
 })
 
 const emits = defineEmits(['getEvent'])
+
+const files = ref(null)
 
 const formEvent = ref({
   evenementName: null,
@@ -246,13 +248,36 @@ console.log('props',props.data)
 
 const validFormEvent = function (){
   console.log(formEvent.value)
+
+  const formData = new FormData()
+
+  if(files.value.length > 0){
+    files.value.forEach(file => {
+      formData.append('ImageFiles', file, file.name);
+    });
+  }
+
+  formData.append("EvenementName",formEvent.value.evenementName)
+  formData.append("Description",formEvent.value.description)
+  formData.append("DateDebut",formEvent.value.dateDebut)
+  formData.append("DateFin",formEvent.value.dateFin)
+  formData.append("DateLimit",formEvent.value.dateLimit)
+  formData.append("Localisation",formEvent.value.localisation)
+  formData.append("NombreParticipant",formEvent.value.nombreParticipant)
+  formData.append("NombreDegustation",formEvent.value.nombreDegustation)
+  formData.append("Prix",formEvent.value.prix)
+  formData.append("AtelierId",formEvent.value.atelierId)
+  if(formEvent.value.ecoleId != null){
+    formData.append("EcoleId",formEvent.value.ecoleId)
+  }
+
+
   fetch(`https://localhost:7110/api/Evenement/${props.data.evenementId}`, {
     method: "put",
     headers: {
-      'Content-Type': 'application/json',
       "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
     },
-    body: JSON.stringify(formEvent.value)
+    body: formData
   }).then(async(result) => {
     emits('getEvent')
     isOpen.value = false
@@ -270,5 +295,12 @@ const deleteEvent = function (){
     isOpen.value = false
     emits('getEvent')
   })
+}
+
+const handleImageChange = function (event){
+  const target = event.target
+  if (target.files) {
+    files.value = Array.from(target.files);
+  }
 }
 </script>

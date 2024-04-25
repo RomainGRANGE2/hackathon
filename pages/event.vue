@@ -10,7 +10,9 @@
         </div>
       </div>
       <div class="cursor-pointer">
-        <svg-icon class="text-gray-500" :path="mdiExportVariant" type="mdi" />
+        <div @click="finishEvent()" class="p-2 px-4 bg-green-600 cursor-pointer rounded-md text-white">
+          Evenement terminé
+        </div>
       </div>
     </div>
     <div class="flex gap-x-4 overflow-scroll scrollbar-hide h-80 px-6 lg:px-2">
@@ -194,6 +196,7 @@ import {useEventStore} from "~/stores/event";
 import {format, parse} from "date-fns";
 import {fr} from "date-fns/locale/fr";
 import {DialogPanel, DialogTitle, TransitionChild, TransitionRoot, Dialog} from "@headlessui/vue";
+
 const router = useRouter()
 
 const eventStore = useEventStore()
@@ -416,8 +419,6 @@ const setStatusToRefus = function (person){
 const sendMaillAll = function (){
   const formData = new FormData()
 
-  console.log(visitors.value.filter(x => x.status == 1).map(x => x.visiteur.email))
-
   const htmlContent = "<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;\">\n" +
       "    <h1 style=\"color: #333333;\">Confirmation de participation</h1>\n" +
       "    <p>Bonjour,</p>\n" +
@@ -427,6 +428,37 @@ const sendMaillAll = function (){
   visitors.value.filter(x => x.status == 1).map(x => x.visiteur.email).forEach(x => formData.append("EmailsTo",x))
   formData.append("Subject",`Rappel de votre Évenement : ${eventStore.currentEvent.evenementName}`)
   formData.append("HtmlContent",htmlContent)
+
+  fetch("https://localhost:7110/api/Mail", {
+    method: "post",
+    headers: {
+      "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
+    },
+    body: formData
+  })
+}
+
+function base64ToBlob(base64, mimeType) {
+  const base64WithoutPrefix = base64.replace(/^data:[a-z]+\/[a-z]+;base64,/, '');
+  const byteCharacters = atob(base64WithoutPrefix);
+  const byteNumbers = new Array(byteCharacters.length);
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+  const byteArray = new Uint8Array(byteNumbers);
+  return new Blob([byteArray], { type: mimeType });
+}
+
+const finishEvent = function (){
+  const formData = new FormData()
+
+  const htmlContent = "TERMINE"
+
+  visitors.value.filter(x => x.status == 1).map(x => x.visiteur.email).forEach(x => formData.append("EmailsTo",x))
+  formData.append("Subject",`Evenement terminé : ${eventStore.currentEvent.evenementName}`)
+  formData.append("HtmlContent",htmlContent)
+  const pdfBlob = base64ToBlob(eventStore.currentEvent.atelier.ressource, 'application/pdf');
+  formData.append('Attachment', pdfBlob, `${eventStore.currentEvent.evenementName}.pdf`);
 
   fetch("https://localhost:7110/api/Mail", {
     method: "post",

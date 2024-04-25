@@ -6,7 +6,7 @@
         <p class="font-redressed text-4xl mb-6">{{atelierStore.currentAtelier.atelierName}}</p>
         <div class="flex gap-x-8">
           <div class="w-5/12">
-            <img src="/_nuxt/assets/images/degust3.png" alt="image">
+            <img :src="atelierStore.currentAtelier.image.length > 0 ? 'data:image/png;base64,' + atelierStore.currentAtelier.image[atelierStore.currentAtelier.image.length-1]?.data : '/_nuxt/assets/images/degust1.png'" alt="image">
           </div>
           <div class="w-7/12 flex flex-col justify-center gap-y-4">
             <p class="font-redressed text-xl">Description</p>

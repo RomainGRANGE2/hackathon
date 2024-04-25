@@ -3,7 +3,7 @@
     <div class="grid gap-6 grid-cols-12">
       <div class="col-span-4 flex flex-col gap-y-4">
         <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">Liste Ateliers</h1>
-        <div v-for="item in ateliers" class="py-4 text-red-900 hover:bg-opacity-20 cursor-pointer bg-primary bg-opacity-10 p-4 rounded-lg" @click="setSelectAtelier(item)">
+        <div v-for="item in ateliers" class="py-4 flex justify-between items-center text-red-900 hover:bg-opacity-20 cursor-pointer bg-primary bg-opacity-10 p-4 rounded-lg" @click="setSelectAtelier(item)">
           <p>{{item.atelierName}}</p>
         </div>
         <div class="py-4 cursor-pointer hover:text-gray-700" @click="addAtelier()" >
@@ -41,7 +41,7 @@
                     </div>
                     <div class="sm:col-span-2">
                       <label for="company" class="block text-sm font-semibold leading-6 text-gray-900">Ressources</label>
-                      <input type="file" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                      <input type="file" @change="handleFileChange" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                     </div>
                     <div class="sm:col-span-2">
                       <label for="email" class="block text-sm font-semibold leading-6 text-gray-900">Image</label>
@@ -256,6 +256,9 @@ if(!isConnected){
 const files = ref([])
 
 const ateliers = ref(null)
+
+const base64String = ref(null)
+
 const atelierSelected = ref(null)
 const formAtelier = ref({
   atelierName: null,
@@ -361,26 +364,20 @@ const validFormAtelier = function (){
     });
   }
 
+  formData.append('Ressource', base64String.value);
+
   const url = newAtelier.value ? "https://localhost:7110/api/Atelier" : `https://localhost:7110/api/Atelier/${atelierSelected.value.atelierId}`
   formData.append("AtelierName",formAtelier.value.atelierName)
   formData.append("Description",formAtelier.value.description)
   formData.append("Thematique",formAtelier.value.thematique)
   formData.append("Date",formAtelier.value.date)
-  formData.append("Ressource",formAtelier.value.ressource)
-  formData.append("ImageFiles",formAtelier.value.imageFiles)
-
-  const headers = newAtelier.value ? {
-    "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
-  } :
-  {
-    "Content-type" : "application/json",
-    "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
-  }
 
   fetch(url, {
     method: newAtelier.value ? "post" : "put",
-    headers: headers,
-    body: newAtelier.value ? formData : JSON.stringify(formAtelier.value)
+    headers: {
+      "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
+    },
+    body: formData
   }).then(async(result) => {
     getAllAtelelier()
   })
@@ -495,5 +492,21 @@ const handleImageChange = function (event){
   }
 }
 
+const handleFileChange = function (event){
+  const target = event.target;
+  if (target.files) {
+    const file = target.files[0];
+    const reader = new FileReader();
+
+    console.log('lalmaal')
+
+    reader.onload = (e) => {
+      base64String.value = e.target?.result;
+      console.log(base64String.value)
+    };
+
+    reader.readAsDataURL(file);
+  }
+}
 
 </script>
