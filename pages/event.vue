@@ -24,16 +24,21 @@
       <div class="col-span-3 flex flex-col p-6 gap-y-2 rounded-xl bg-white shadow-xl">
         <p class="font-bold">{{eventStore.currentEvent.prix}} € / personne</p>
         <input v-model="email" type="email" class="rounded-2xl border-gray-400 border pl-4 py-2" placeholder="Adresse e-mail">
+        <div class="flex flex-col gap-y-2">
+          <p class="text-xs">Si vous êtes étudiant séléctioné votre école</p>
+          <select v-model="ecole">
+            <option v-for="item in allEcoles" :value="item.ecoleId">{{item.ecoleName}}</option>
+          </select>
+        </div>
         <div @click="signInEvent()" class="bg-primary w-full rounded-2xl text-center py-2 cursor-pointer text-white">
           S'inscrire
         </div>
       </div>
     </div>
     <div v-if="isConnected" class="bg-white m-5 rounded-2xl px-4 py-6 sm:px-6 lg:px-8">
-      <div class="sm:flex sm:items-center">
-        <div class="sm:flex-auto">
-          <h1 class="text-base font-semibold leading-6 text-gray-900">Participants</h1>
-        </div>
+      <div class="flex justify-between">
+        <p class="text-base font-semibold leading-6 text-gray-900">Participants</p>
+        <p>{{nbParticipants}}/{{eventStore.currentEvent.nombreParticipant}}</p>
       </div>
       <div class="mt-5 flow-root">
         <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -48,25 +53,27 @@
               </tr>
               </thead>
               <tbody class="divide-y divide-gray-200 bg-white">
-              <tr v-for="person in visitors" :key="person.email">
+              <tr v-for="person in visitors" :key="person.visiteur.visiteurId">
                 <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
                   <div class="flex items-start">
                     <div class="  ">
-                      <div class="font-medium text-gray-900">{{ person.email }}</div>
+                      <div class="font-medium text-gray-900">{{ person.visiteur.email }}</div>
                     </div>
                   </div>
                 </td>
-                <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                  <div class="text-gray-900">{{ person.title }}</div>
-                  <div class="mt-1 text-gray-500">{{ person.department }}</div>
+                <td>
+                  <span v-if="person.visiteur.ecoleId == null">Pas d'école</span>
+                  <span v-else>{{person.visiteur.ecole.ecoleName}}</span>
                 </td>
                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                  <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Active</span>
+                  <span v-if="person.status == 0" class="inline-flex items-center rounded-md bg-orange-50 px-2 py-1 text-xs font-medium text-orange-700 ring-1 ring-inset ring-orange-600/20">En attente</span>
+                  <span v-else-if="person.status == 1" class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Inscrit</span>
+                  <span v-else class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Refusé</span>
                 </td>
                 <td class="flex gap-x-2 justify-end relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                  <button class="text-white bg-green-500 py-2 px-4 rounded-3xl hover:text-green-500 hover:bg-white hover:border-green-500 border transition-all duration-300"
+                  <button v-if="person.status != 1" @click="setStatusToPaid(person)" class="text-white bg-green-500 py-2 px-4 rounded-3xl hover:text-green-500 hover:bg-white hover:border-green-500 border transition-all duration-300"
                   >À payer</button>
-                  <button class="text-white bg-primary py-2 px-4 rounded-3xl hover:text-primary hover:bg-white hover:border-primary border transition-all duration-300"
+                  <button v-if="person.status != 2" @click="setStatusToRefus(person)" class="text-white bg-primary py-2 px-4 rounded-3xl hover:text-primary hover:bg-white hover:border-primary border transition-all duration-300"
                   >Refuser</button>
                 </td>
               </tr>
@@ -141,6 +148,7 @@ const event = ref(null)
 const allEvents = ref(null)
 
 const email = ref("")
+const ecole = ref(null)
 
 const show = ref(false)
 const verifMail = ref(false)
@@ -186,32 +194,27 @@ const images = ref([
   }
 ])
 
-const otherDates = ref([
-  {
-    img:"/_nuxt/assets/images/degust1.png",
-    location : "Rhône Lyon, France",
-    date: "Samedi 15 juin",
-    price: "55"
-  },
-  {
-    img:"/_nuxt/assets/images/degust1.png",
-    location : "Rhône Lyon, France",
-    date: "Samedi 15 juin",
-    price: "55"
-  },
-  {
-    img:"/_nuxt/assets/images/degust1.png",
-    location : "Rhône Lyon, France",
-    date: "Samedi 15 juin",
-    price: "55"
-  }
-])
-
 const visitors = ref([]);
 
 const pages = [
   { name: 'Evenement dégustation', href: '/event' },
 ]
+
+const allEcoles = ref([])
+
+const getAllEcole = function (){
+  fetch(`https://localhost:7110/api/Ecole`, {
+    method: "get",
+    headers: {
+      "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
+    }
+  }).then(async(result) => {
+    const ecoleResult = await result.json()
+    allEcoles.value = ecoleResult
+  })
+}
+
+getAllEcole()
 
 const parseAndFormat = function(date, formatWish){
   return format(parse(date, "yyyy-MM-dd", new Date()), formatWish, {
@@ -258,6 +261,22 @@ const signInEvent = function (){
   }).then((result) => {
     if(result.ok){
       verifMail.value = true
+
+      const url =
+          ecole.value != null ? `https://localhost:7110/api/EvenementVisiteur?email=${email.value}&evenementId=${eventStore.currentEvent.evenementId}&ecoleId=${ecole.value}`:
+          `https://localhost:7110/api/EvenementVisiteur?email=${email.value}&evenementId=${eventStore.currentEvent.evenementId}`
+
+      fetch(url, {
+        method: "post",
+        headers: {
+          "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
+        },
+      }).then((result) => {
+        getAllVisiteurByEvenement()
+      })
+
+      // ICI POUR get le last visiteur et lié celui-ci vers l'event
+
     } else {
       verifMail.value = false
     }
@@ -265,23 +284,71 @@ const signInEvent = function (){
     email.value = ""
   })
 }
-fetch('https://localhost:7110/api/EvenementVisiteur', {
-  method: 'GET',
-  headers: {
-    "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
-  }
-})
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
+
+const nbParticipants = ref(null)
+
+const getAllVisiteurByEvenement = function (){
+  fetch(`https://localhost:7110/api/EvenementVisiteur/${eventStore.currentEvent.evenementId}`, {
+    method: "get",
+    headers: {
+      "Content-Type" : "application/json",
+      "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
+    },
+  }).then(async(result) => {
+    const EventVisiteurResult = await result.json()
+    visitors.value = EventVisiteurResult
+    nbParticipants.value = EventVisiteurResult.filter(x => x.status == 1).length
+  })
+}
+
+const setStatusToPaid = function (person){
+
+  const visiteurId = person.visiteurId
+
+  fetch(`https://localhost:7110/api/EvenementVisiteur?evenementId=${eventStore.currentEvent.evenementId}&visiteurId=${visiteurId}&status=1`, {
+    method: "put",
+    headers: {
+      "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
+    },
+  }).then(async(result) => {
+    getAllVisiteurByEvenement()
+
+    const formData = new FormData();
+    const htmlContent = "<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;\">\n" +
+        "    <h1 style=\"color: #333333;\">Confirmation de participation</h1>\n" +
+        "    <p>Bonjour,</p>\n" +
+        "    <p>Nous avons le plaisir de vous informer que votre demande de participation à l'événement a été acceptée.</p>\n" +
+        "    <p><strong>Événement:</strong> " + eventStore.currentEvent.evenementName + " </p>\n" +
+        "    <p><strong>Date de l'événement:</strong>" + parseAndFormat(eventStore.currentEvent.dateDebut,"EEEE dd MMMM yyyy") + "</p>\n" +
+        "    <p>Nous espérons vous voir bientôt parmi nous.</p>\n" +
+        "  </div>"
+    formData.append('EmailsTo', person.visiteur.email);
+    formData.append('Subject', `Confirmation d'inscription à ${eventStore.currentEvent.evenementName}`);
+    formData.append('HtmlContent', htmlContent);
+    fetch("https://localhost:7110/api/Mail", {
+      method: "post",
+      headers: {
+        "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
+      },
+      body: formData
     })
-    .then(data => {
-      visitors.value = data;
-    })
-    .catch(error => {
-      console.error('There was a problem with your fetch operation:', error);
-    });
+  })
+}
+
+const setStatusToRefus = function (person){
+
+  const visiteurId = person.visiteurId
+
+  fetch(`https://localhost:7110/api/EvenementVisiteur?evenementId=${eventStore.currentEvent.evenementId}&visiteurId=${visiteurId}&status=2`, {
+    method: "put",
+    headers: {
+      "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
+    },
+  }).then(async(result) => {
+    getAllVisiteurByEvenement()
+  })
+}
+
+getAllVisiteurByEvenement()
 
 </script>
