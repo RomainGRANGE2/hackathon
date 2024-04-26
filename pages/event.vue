@@ -332,22 +332,44 @@ const setEventInStore = function (event){
 
 const signInEvent = function (){
   const formData = new FormData();
-  const htmlContent = "<div style=\"max-width: 600px; margin: 20px auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\">\n" +
-      "  <h1 style=\"text-align: center;\">Confirmation d'inscription à " + eventStore.currentEvent.evenementName + "</h1>\n" +
-      "  \n" +
-      "  <p style=\"text-align: center;\">Merci pour votre inscription à notre événement de dégustation de vin. Voici un récapitulatif de vos informations :</p>\n" +
-      "  \n" +
-      "  <ul>\n" +
-      "    <li><strong>Adresse e-mail :</strong> " + email.value + "</li>\n" +
-      "  </ul>\n" +
-      "  \n" +
-      "  <div style=\"background-color: #f9f9f9; padding: 10px; border-radius: 4px;\">\n" +
-      "    <p><strong>Information de paiement :</strong></p>\n" +
-      "    <p>Veuillez effectuer le paiement de votre inscription à l'événement en utilisant les informations suivantes :</p>\n" +
-      "    <p><strong>Montant : </strong>" + eventStore.currentEvent.prix + "€</p>\n" +
-      "    <p><strong>Mode de paiement :</strong> Paylib (06 XX XX XX XX)</p>\n" +
-      "  </div>\n" +
-      "</div>"
+  let htmlContent = `
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 20px auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        h1 { text-align: center; color: #4A90E2; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin-bottom: 10px; }
+        .payment-info { background-color: #f9f9f9; padding: 10px; border-radius: 4px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Confirmation d'inscription</h1>
+        <p>Bonjour,</p>
+        <p>Merci de vous être inscrit à l'événement "<strong>${eventStore.currentEvent.evenementName}</strong>". Nous sommes ravis de vous accueillir prochainement pour cette expérience unique.</p>
+        <p>Veuillez trouver ci-dessous les détails de votre inscription :</p>
+        <ul>
+            <li><strong>Adresse e-mail :</strong> ${email.value}</li>
+        </ul>
+        <div class="payment-info">
+            <h2>Informations de paiement</h2>
+            <p>Merci d'effectuer le paiement pour confirmer votre place à notre événement. Veuillez trouver les détails nécessaires ci-dessous :</p>
+            <ul>
+                <li><strong>Montant à payer :</strong> ${eventStore.currentEvent.prix}€</li>
+                <li><strong>Méthode de paiement :</strong> Paylib (06 XX XX XX XX)</li>
+            </ul>
+        </div>
+        <p>Nous vous remercions encore pour votre inscription et avons hâte de vous rencontrer.</p>
+        <p>Cordialement,</p>
+        <p><strong>L'équipe de [Nom de votre organisation]</strong></p>
+    </div>
+</body>
+</html>
+`;
   formData.append('EmailsTo', email.value);
   formData.append('Subject', `Inscription à ${eventStore.currentEvent.evenementName}`);
   formData.append('HtmlContent', htmlContent);
@@ -414,14 +436,17 @@ const setStatusToPaid = function (person){
       getAllVisiteurByEvenement()
 
       const formData = new FormData();
-      const htmlContent = "<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;\">\n" +
-          "    <h1 style=\"color: #333333;\">Confirmation de participation</h1>\n" +
-          "    <p>Bonjour,</p>\n" +
-          "    <p>Nous avons le plaisir de vous informer que votre demande de participation à l'événement a été acceptée.</p>\n" +
-          "    <p><strong>Événement:</strong> " + eventStore.currentEvent.evenementName + " </p>\n" +
-          "    <p><strong>Date de l'événement:</strong>" + parseAndFormat(eventStore.currentEvent.dateDebut,"EEEE dd MMMM yyyy") + "</p>\n" +
-          "    <p>Nous espérons vous voir bientôt parmi nous.</p>\n" +
-          "  </div>"
+      const htmlContent = `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+    <h1 style="color: #333333; text-align: center;">Confirmation de participation</h1>
+    <p>Bonjour,</p>
+    <p>Nous sommes ravis de vous confirmer que votre inscription à l'événement "<strong>${eventStore.currentEvent.evenementName}</strong>" a été acceptée. Merci de votre intérêt pour cet événement.</p>
+    <p><strong>Date de l'événement :</strong> ${parseAndFormat(eventStore.currentEvent.dateDebut, "EEEE dd MMMM yyyy")}</p>
+    <p>Nous sommes impatients de vous accueillir et espérons que vous profiterez pleinement de cette expérience unique.</p>
+    <p>Au plaisir de vous rencontrer bientôt !</p>
+    <p>Cordialement,</p>
+    <p><strong>L'équipe de [Nom de votre organisation]</strong></p>
+</div>`;
+
       formData.append('EmailsTo', person.visiteur.email);
       formData.append('Subject', `Confirmation d'inscription à ${eventStore.currentEvent.evenementName}`);
       formData.append('HtmlContent', htmlContent);
@@ -451,12 +476,16 @@ const setStatusToRefus = function (person){
     getAllVisiteurByEvenement()
 
     const formData = new FormData();
-    const htmlContent = "<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;\">\n" +
-        "    <h1 style=\"color: #333333;\">Votre demande de participation a été refusé</h1>\n" +
-        "    <p>Bonjour,</p>\n" +
-        "    <p>Nous sommes désolé mais nous ne pouvons pas assuré votre présence à cet évenement</p>\n" +
-        "    <p>Nous espérons vous voir bientôt parmi nous.</p>\n" +
-        "  </div>"
+    const htmlContent = `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+    <h1 style="color: #333333; text-align: center;">Demande de participation refusée</h1>
+    <p>Bonjour,</p>
+    <p>Nous vous remercions pour votre intérêt à rejoindre notre événement. Après examen attentif de votre demande, nous regrettons de vous informer que nous ne pouvons pas confirmer votre participation à cette occasion.</p>
+    <p>Nous comprenons que cela puisse être décevant et espérons sincèrement avoir l'opportunité de vous accueillir lors de futurs événements.</p>
+    <p>En attendant, n'hésitez pas à suivre nos activités et mises à jour pour plus d'opportunités à venir.</p>
+    <p>Cordialement,</p>
+    <p><strong>L'équipe de [Nom de votre organisation]</strong></p>
+</div>`;
+
     formData.append('EmailsTo', person.visiteur.email);
     formData.append('Subject', `Refus d'inscription à ${eventStore.currentEvent.evenementName}`);
     formData.append('HtmlContent', htmlContent);
@@ -476,11 +505,20 @@ const errorEmailSend = ref(false)
 const sendMaillAll = function (){
   const formData = new FormData()
 
-  const htmlContent = "<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;\">\n" +
-      "    <h1 style=\"color: #333333;\">Confirmation de participation</h1>\n" +
-      "    <p>Bonjour,</p>\n" +
-      "    <p>Rappel pour votre évenement du " + parseAndFormat(eventStore.currentEvent.dateDebut,"EEEE dd MMMM yyyy") + "</p>\n" +
-      "  </div>"
+  const htmlContent = `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+    <h1 style="color: #333333; text-align: center;">Rappel d'événement</h1>
+    <p>Bonjour,</p>
+    <p>Nous tenons à vous rappeler que l'événement "<strong>${eventStore.currentEvent.evenementName}</strong>" se tiendra très prochainement. Voici les détails pour vous préparer :</p>
+    <ul>
+        <li><strong>Date :</strong> ${parseAndFormat(eventStore.currentEvent.dateDebut, "EEEE dd MMMM yyyy")}</li>
+        <li><strong>Heure :</strong> ${parseAndFormat(eventStore.currentEvent.dateDebut, "HH:mm")} jusqu'à ${parseAndFormat(eventStore.currentEvent.dateFin, "HH:mm")}</li>
+        <li><strong>Lieu :</strong> ${eventStore.currentEvent.localisation}</li>
+    </ul>
+    <p>Nous espérons vous voir bientôt et sommes certains que vous apprécierez l'événement.</p>
+    <p>Si vous avez des questions ou si vous avez besoin de plus d'informations, n'hésitez pas à nous contacter.</p>
+    <p>Cordialement,</p>
+    <p><strong>L'équipe de [Nom de votre organisation]</strong></p>
+</div>`;
 
   visitors.value.filter(x => x.status == 1).map(x => x.visiteur.email).forEach(x => formData.append("EmailsTo",x))
   formData.append("Subject",`Rappel de votre Évenement : ${eventStore.currentEvent.evenementName}`)
@@ -516,24 +554,16 @@ function base64ToBlob(base64, mimeType) {
 const finishEvent = function (){
   const formData = new FormData()
 
-  const htmlContent = "<div style=\"font-family: Arial, sans-serif;\">\n" +
-      "        <h1>Merci pour votre participation à notre événement !</h1>\n" +
-      "        <p>\n" +
-      "            Bonjour,\n" +
-      "        </p>\n" +
-      "        <p>\n" +
-      "            Nous tenons à vous remercier chaleureusement pour avoir participé à notre récent événement. Votre présence et votre contribution ont été très appréciées.\n" +
-      "        </p>\n" +
-      "        <p>\n" +
-      "            Vous trouverez ci-joint le récapitulatif de l'événement\n" +
-      "        </p>\n" +
-      "        <p>\n" +
-      "            Si vous avez des questions ou des commentaires, n'hésitez pas à nous contacter.\n" +
-      "        </p>\n" +
-      "        <p>\n" +
-      "            Cordialement,<br>\n" +
-      "        </p>\n" +
-      "    </div>"
+  const htmlContent = `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+    <h1 style="text-align: center;">Merci pour votre participation à notre événement !</h1>
+    <p>Bonjour,</p>
+    <p>Nous tenons à vous remercier chaleureusement pour votre participation à notre récent événement. Votre présence et votre engagement ont grandement contribué à son succès.</p>
+    <p>Vous trouverez ci-joint un récapitulatif de l'événement, qui espérons-le, vous sera utile pour garder un souvenir de cette expérience.</p>
+    <p>Si vous avez des questions ou souhaitez partager vos commentaires, n'hésitez pas à nous contacter. Votre feedback est précieux et nous aide à améliorer nos futurs événements.</p>
+    <p>Cordialement,</p>
+    <p><strong>L'équipe de [Nom de votre organisation]</strong></p>
+</div>`;
+
 
   visitors.value.filter(x => x.status == 1).map(x => x.visiteur.email).forEach(x => formData.append("EmailsTo",x))
   formData.append("Subject",`Récapitulatif évenement : ${eventStore.currentEvent.evenementName}`)
