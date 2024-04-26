@@ -1,7 +1,7 @@
 <template>
   <div class="bg-primary flex flex-col gap-y-6 bg-opacity-10">
     <breadcrumb :pages="pages" class="px-6 lg:px-40 pt-3" />
-    <div class="flex justify-between items-center px-6 lg:px-40">
+    <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-y-4 lg:gap-y-0 px-6 lg:px-40">
       <div class="flex flex-col gap-y-4">
         <p class="font-redressed text-5xl">{{eventStore.currentEvent.evenementName}}</p>
         <div class="flex flex-col gap-y-1">
@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="cursor-pointer">
-        <div v-if="isConnected" @click="finishEvent()" class="p-2 px-4 bg-green-600 rounded-md text-white">
+        <div v-if="isConnected && !checkDateLimit(eventStore.currentEvent.dateFin)" @click="finishEvent()" class="p-2 text-center inline px-4 bg-green-600 rounded-md text-white">
           Evenement terminé
         </div>
       </div>
@@ -23,18 +23,24 @@
         <p class="font-redressed text-xl">Description</p>
         <p>{{eventStore.currentEvent.description}}</p>
       </div>
-      <div v-if="true" class="col-span-3 flex flex-col p-6 gap-y-2 rounded-xl bg-white shadow-xl">
+      <div v-if="checkDateLimit(eventStore.currentEvent.dateLimit) && !isConnected" class="col-span-3 flex flex-col p-6 gap-y-2 rounded-xl bg-white shadow-xl">
         <p class="font-bold">{{eventStore.currentEvent.prix}} € / personne</p>
-        <input v-model="email" type="email" class="rounded-2xl border-gray-400 border pl-4 py-2" placeholder="Adresse e-mail">
+        <input :disabled="!(nbParticipants < eventStore.currentEvent.nombreParticipant)" v-model="email" type="email" class="rounded-2xl border-gray-400 border pl-4 py-2" placeholder="Adresse e-mail">
         <div class="flex flex-col gap-y-2">
           <p class="text-xs">Si vous êtes étudiant séléctioné votre école</p>
           <select v-model="ecole">
             <option v-for="item in allEcoles" :value="item.ecoleId">{{item.ecoleName}}</option>
           </select>
         </div>
-        <div v-if="true" @click="signInEvent()" class="bg-primary w-full rounded-2xl text-center py-2 cursor-pointer text-white"> <!--nbParticipants > eventStore.currentEvent.nombreParticipant-->
+        <div v-if="nbParticipants < eventStore.currentEvent.nombreParticipant" @click="signInEvent()" class="bg-primary w-full rounded-2xl text-center py-2 cursor-pointer text-white"> <!--nbParticipants > eventStore.currentEvent.nombreParticipant-->
           S'inscrire
         </div>
+        <div v-else class="bg-primary w-full rounded-2xl text-center py-2 cursor-pointer text-white">
+          COMPLET
+        </div>
+      </div>
+      <div v-else-if="!isConnected" class="col-span-3 flex flex-col p-6 gap-y-2 rounded-xl bg-gray-100 shadow-xl">
+        <p>Date limite atteinte pour participer à cet évenement</p>
       </div>
     </div>
     <div v-if="isConnected" class="bg-white m-5 rounded-2xl py-6 px-6 lg:mx-40">
@@ -218,7 +224,7 @@ import Breadcrumb from "~/components/breadcrumb.vue";
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiExportVariant, mdiClose,mdiCheckCircleOutline, mdiCloseCircleOutline } from '@mdi/js';
 import {useEventStore} from "~/stores/event";
-import {format, parse} from "date-fns";
+import {compareAsc, format, parse} from "date-fns";
 import {fr} from "date-fns/locale/fr";
 import {DialogPanel, DialogTitle, TransitionChild, TransitionRoot, Dialog} from "@headlessui/vue";
 
@@ -239,6 +245,10 @@ const errorNbParticipant = ref(false)
 
 const closeModal = function (){
   errorNbParticipant.value = false
+}
+
+const checkDateLimit = function(date) {
+  return compareAsc(parseAndFormat(date,"yyyy-MM-dd'T'HH:mm"), new Date()) == 1
 }
 
 const loadEvent = function (){
@@ -313,6 +323,7 @@ const parseAndFormat = function(date, formatWish){
 const setEventInStore = function (event){
   eventStore.currentEvent = event
   loadEvent()
+  getAllVisiteurByEvenement()
   window.scrollTo({
     top: 0,
     behavior: "smooth"

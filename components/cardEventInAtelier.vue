@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col rounded-xl">
     <div>
-      <img :src="props.data.imageEvenement.length > 0 ? 'data:image/png;base64,'+props.data.imageEvenement[props.data.imageEvenement.length-1].data : '/_nuxt/assets/images/degust1.png'" alt="image" class="rounded-t-xl">
+      <img :src="props.data.imageEvenement.length > 0 ? 'data:image/png;base64,'+props.data.imageEvenement[props.data.imageEvenement.length-1].data : '/_nuxt/assets/images/degust1.png'" alt="image" class="rounded-t-xl object-cover h-[180px] w-full">
     </div>
     <div class="bg-primary bg-opacity-10 p-4 rounded-b-xl">
       <div class="flex justify-between items-center">
@@ -163,7 +163,7 @@ const props = defineProps({
 
 const emits = defineEmits(['getEvent'])
 
-const files = ref(null)
+const files = ref([])
 
 const formEvent = ref({
   evenementName: null,
