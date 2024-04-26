@@ -9,7 +9,7 @@
     </div>
     <div class="flex flex-col gap-y-6 px-6 lg:px-40">
       <div v-for="item in ateliers" class="lg:grid flex flex-col rounded-xl lg:gap-6 gap-4 grid-cols-12 bg-primary bg-opacity-10">
-        <div class="col-span-5 max-h-60 lg:h-auto">
+        <div class="col-span-5 min-h-60 lg:h-auto">
           <img :src="item.image.length > 0 ? 'data:image/png;base64,' + item.image[item.image.length-1]?.data : '/_nuxt/assets/images/degust1.png'" alt="image" class="lg:rounded-l-xl object-cover h-full w-full">
         </div>
         <div class="col-span-7 flex flex-col gap-y-4 lg:pr-6 lg:py-6 p-4">

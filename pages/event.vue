@@ -404,6 +404,9 @@ const signInEvent = function (){
   })
 }
 
+const emailIsSend = ref(false)
+const errorEmailSend = ref(false)
+
 const nbParticipants = ref(null)
 
 const getAllVisiteurByEvenement = function (){
@@ -456,6 +459,13 @@ const setStatusToPaid = function (person){
           "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
         },
         body: formData
+      }).then((result) => {
+        if(result.ok){
+          errorEmailSend.value = true
+        } else {
+          errorEmailSend.value = false
+        }
+        emailIsSend.value = true
       })
     })
   } else {
@@ -495,12 +505,16 @@ const setStatusToRefus = function (person){
         "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
       },
       body: formData
+    }).then((result) => {
+      if(result.ok){
+        errorEmailSend.value = true
+      } else {
+        errorEmailSend.value = false
+      }
+      emailIsSend.value = true
     })
   })
 }
-
-const emailIsSend = ref(false)
-const errorEmailSend = ref(false)
 
 const sendMaillAll = function (){
   const formData = new FormData()

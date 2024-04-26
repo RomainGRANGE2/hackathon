@@ -23,21 +23,20 @@
           <p class="lg:text-center">{{item.desc}}</p>
         </div>
       </div>
-
       <div class="hidden lg:block bg-[url('/_nuxt/assets/images/bottle.svg')] relative mb-60 -left-24" style="height: 490px;">
         <div class="absolute top-8 right-0 border-4 border-primary w-1/3 bg-white p-5 rounded-lg">
-          <img :src="infoDescription?.image" alt="prof" class="w-full">
+          <img :src="infoDescription?.image" alt="prof" class="w-full max-h-[300px] object-cover">
           <svg-icon v-if="isConnected" @click="openDialogFormDesc()" class="absolute cursor-pointer text-white h-10 w-10 p-2 bg-primary rounded-full top-8 right-8 p-1" type="mdi" :path="mdiPencil" />
           <p class="text-center font-redressed text-4xl my-4">{{infoDescription?.title}}</p>
           <p class="text-justify">{{ infoDescription?.description }}</p>
         </div>
       </div>
-    </div> 
+    </div>
     <div class="lg:hidden w-full bg-primary px-6">
       <div class="flex md:flex-row flex-col gap-y-4 md:gap-y-0 gap-x-10 py-6">
         <div class="relative md:w-1/2">
           <svg-icon v-if="isConnected" @click="openDialogFormDesc()" class="absolute cursor-pointer text-white h-10 w-10 p-2 bg-primary rounded-full top-4 right-4 p-1" type="mdi" :path="mdiPencil" />
-          <img :src="infoDescription?.image" alt="prof">
+          <img class="max-h-[300px] object-cover" :src="infoDescription?.image" alt="prof">
         </div>
         <div class="md:w-1/2 flex flex-col justify-center gap-y-4 text-white">
           <p class="text-left font-redressed text-4xl">{{infoDescription?.title}}</p>
@@ -87,7 +86,7 @@
                       <div>
                         <label for="first-name" class="block text-sm font-semibold leading-6 text-gray-900">Image</label>
                         <div class="mt-2.5">
-                          <input v-model="formDesc.image" type="text" autocomplete="given-name" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                          <input @change="handleInputImage" type="file" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                         </div>
                       </div>
                       <div>
@@ -143,10 +142,20 @@ const openDialogFormDesc = function(){
   isOpen.value = true
 }
 
+const CreateDesc = ref(true)
+
+const base64String = ref(null)
+
 const validFormDesc = function (){
-  console.log(formDesc.value)
-  fetch(`https://localhost:7110/api/HomeDescription/1`, {
-    method: "put",
+
+  if(base64String.value != null){
+    formDesc.value.image = base64String.value;
+  }
+
+  const url = CreateDesc.value ? "https://localhost:7110/api/HomeDescription" : "https://localhost:7110/api/HomeDescription/1"
+
+  fetch(url, {
+    method: CreateDesc.value ? "post" : "put",
     headers: {
       'Content-Type': 'application/json',
       "Authorization" : `Bearer ${localStorage.getItem("accessToken")}`
@@ -179,7 +188,6 @@ fetch("https://localhost:7110/api/Evenement", {
   }
 }).then(async(result) => {
   event.value = await result.json()
-  console.log(event.value)
 })
 
 const infoDescription = ref(null)
@@ -193,14 +201,27 @@ const getHomeDescriptionbyId = function () {
   })
       .then(async (result) => {
         const homeDescriptionResult = await result.json();
-        infoDescription.value = homeDescriptionResult[0];
-        formDesc.value = infoDescription.value
-        console.log(infoDescription.value)
+        if(homeDescriptionResult.length > 0){
+          formDesc.value = homeDescriptionResult[0];
+          infoDescription.value = formDesc.value
+          CreateDesc.value = false
+        }
       })
-      .catch(error => {
-        console.error('Erreur lors de la récupération de la description de la maison :', error);
-      });
-};
+}
+
+const handleInputImage = function (event){
+  const target = event.target;
+  if (target.files) {
+    const file = target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      base64String.value = e.target?.result;
+    };
+
+    reader.readAsDataURL(file);
+  }
+}
 
 getHomeDescriptionbyId()
 

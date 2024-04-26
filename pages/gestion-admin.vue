@@ -498,11 +498,8 @@ const handleFileChange = function (event){
     const file = target.files[0];
     const reader = new FileReader();
 
-    console.log('lalmaal')
-
     reader.onload = (e) => {
       base64String.value = e.target?.result;
-      console.log(base64String.value)
     };
 
     reader.readAsDataURL(file);

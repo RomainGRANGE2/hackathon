@@ -5,7 +5,7 @@
       to="/event"
       class="atelier cursor-pointer w-[200px] lg:w-auto !bg-cover h-[390px] rounded-lg flex flex-col gap-y-2 items-center justify-center relative"
     >
-      <p class="font-rubik text-3xl text-[#FFAF9D] font-extrabold">
+      <p class="font-rubik text-center text-3xl text-[#FFAF9D] font-extrabold">
         {{ props.data.evenementName }}
       </p>
       <p class="text-white font-redressed text-lg">
